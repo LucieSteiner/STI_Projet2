@@ -70,7 +70,7 @@ Un incident pourrait résulter en :
 
 ## Data Flow Diagram ##
 
-![](images/dfd.PNG)
+![](images/dfd.png)
 
 **TODO: A commenter**
 
