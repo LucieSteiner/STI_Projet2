@@ -116,9 +116,54 @@ Un incident pourrait résulter en :
 
 ## Scénarios d'attaques ##
 
+Petite intro
+
+Remarque: les contre-mesures pour les différents scénarios sont nommées ici et seront décrites plsu en détail dans le chapitre suivant.
+
 ### STRIDE ###
 
+Expliquer STRIDE et comment on va l'utiliser pour catégoriser les attaques.
+
+### Scénario 1 : Guessing de mot de passe ###
+
+Etant donné qu’il est nécessaire d’être authentifié pour avoir accès aux fonctionnalités de l’application, ce scénario est une première étape permettant ensuite de pouvoir lancer d’autres attaques. Les scénarios 2, 3 et 4 présentent d’autres manières de s’authentifier illégalement.
+
+**Catégorie STRIDE:** S
+
+**Impact:** Haut (permet d’effectuer d’autres attaques)
+
+**Source de menace:** Hacker, Cybercrime, Concurrents, Employés
+
+**Motivations:** 
+
+* Pour les hackers, cela peut être un défi en soi ou un moyen d'accéder à plus de défis.
+* Pour des cybercriminels ou des concurrents, l'intérêt est d'avoir accès au système de messagerie.
+* Pour les employés, le but peut être de se faire passer pour quelqu'un d'autre, de lire les messages de quelqu'un d'autre ou d'utiliser des fonctionnalités réservées aux administrateurs.
+
+**Element(s) du système attaqué:** Informations des utilisateurs (login/password)
+
+**Faille(s) permettant l'attaque:**
+* Aucune vérification sur les mots de passe choisis 
+* Mots de passe définis par l’admin
+
+**Scénario d'attaque:**
+Lorsqu’on crée un utilisateur ou que l’on change son mot de passe, il n’est pas demandé de fournir un nombre minimum de caractères ou d’utiliser des chiffres et des signes de ponctuation. Il n’y a pas non plus d’avertissement rappelant à l’utilisateur de ne pas choisir un mot de passe trop simple. Il est donc fort possible qu’un grand nombre d’utilisateur choisissent comme mot de passe leur login ou quelque chose comme 1234. Dans la situation actuelle, tester les mots de passe suivants permet d’accéder à tous les comptes :
+-	Login (p. ex : admin ou lucie)
+-	1234
+-	12345678
+-	Abcd
+Une autre faiblesse actuelle est que seuls les administrateurs peuvent créer des nouveaux utilisateurs. L’avantage est que cela empêche des personnes externes de se créer un compte, mais l’inconvénient est que les administrateurs doivent mettre un mot de passe par défaut, que les utilisateurs sont censés modifier par la suite. Dans la réalité, le mot de passe par défaut sera souvent quelque chose de simple, pour simplifier la tâche à l’administrateur. Il peut s’agir par exemple du login, du nom de famille, ou d’une combinaison du prénom et du nom de famille. En ajoutant à ça le fait que plusieurs utilisateurs ne changeront pas très rapidement, voire jamais, tenter différentes combinaisons basées sur le nom des employés peut donner beaucoup de résultats. Les employés de l’entreprise sont ceux qui peuvent le mieux exploiter cette faiblesse, étant donné qu’ils connaissent la logique de choix des mots de passe.
+
+**Contre-mesures:**
+
+* Forcer les utilisateurs à choisir un mot de passe fort (au moins 8 caractères, lettres et chiffres, maj/min, ponctuation)
+* Ajouter une recommendation (« Le mot de passe ne doit pas contenir votre login, votre nom ou prénom, le nom de l’entreprise ou de l’application. Si possible, choisissez un mot de passe qui n’a pas de sens. »)
+* Pour les administrateurs : Générer un mot de passe aléatoire pour les nouveaux utilisateurs et le leur communiquer de manière sécurisée.
+
 ### Scénario 1 : Titre ###
+Petite phrase pour expliquer ce que permet cette attaque.
+
+**Catégorie:**
 
 **Impact:** 
 
@@ -128,9 +173,12 @@ Un incident pourrait résulter en :
 
 **Element(s) du système attaqué:**
 
+**Faille(s) permettant l'attaque:**
+
 **Scénario d'attaque:**
 
-Eventuellement ajouter ici comment contrer ça puis faire un résumé des contremesures dans le chapitre suivant
+**Contre-mesures:**
+
 
 ## Contre-mesures ##
 
