@@ -381,31 +381,31 @@ Ce scénario nécessite d'être déjà connecté à l'application.
 
 Imaginons que deux employés utilisent le site de messagerie de l'entreprise pour discuter d'une affaire illégale. Accidentellement, l'un des deux envoie un message concernant cette affaire à leur patron. Il doit donc trouver un moyen de le supprimer avant que son patron ne découvre leur afffaire et les vire.
 
-![](images/delete1.png)
+![](images/delete1.PNG)
  
 L'employé en question peut supprimer ce message en envoyant un second message au patron qui contient du code. Le code en question sera executé du côté du patron et utilisera le fait que seul le destinataire d'un message est autorisé à le supprimer. Ce code utilise donc les privilèges du patron pour supprimer le premier message. 
 Le message que l'employé enverra à son patron pourrait être le suivant: 
 
-![](images/delete2.png)
+![](images/delete2.PNG)
 
 
 *Note*: On part ici du principe que l'utilisateur a un moyen de connaître l'id des messages qu'il envoie. Comme l'id des messages est simplement incrémenté, il peut s'envoyer un message à lui-même et en déduire l'id du prochain message.
 
 Lorsque le patron l'ouvre, il sera redirigé vers la page de suppresion de message, puis de nouveau vers sa messagerie, où le premier e-mail aura disparu:
 
-![](images/delete3.png)
+![](images/delete3.PNG)
 
 Evidememnt, ce n'est pas très discret, et le patron pourrait décider d'ouvrir d'abord le premier message. L'employé peut donc décider de mettre son code dans le sujet du message, qui sera directement affiché:
 
-![](images/delete5.png)
+![](images/delete5.PNG)
 
 Cette fois le patron sera directement redirigé vers la page de suppression de messages en se connectant. Par contre, comme il sera par la suite redirigé vers sa messagerie, l'employé doit également supprimer le message contant le code pour éviter une boucle infinie de redirection. Le message suivant devrait faire l'affaire:
 
-![](images/delete7.png) 
+![](images/delete7.PNG) 
 
 Lorsque le patron ouvre sa messagerie, voici ce qu'il obtient:
 
-![](images/delete8.png)
+![](images/delete8.PNG)
 
 Les deux messages suspects ont disparu.
 
@@ -440,11 +440,11 @@ Ce scénario nécessite d'être déjà connecté à l'application.
 
 Nous avons vu dans le scénario précédent comment il était possible de faire une boucle infinie de redirection. Il suffit donc de réutiliser le même principe, par exemple en écrivant le message suivant: 
 
-![](images/loop1.png)
+![](images/loop1.PNG)
 
 Lorsque le destinataire se connectera, il sera coincé dans une boucle de redirection l'empêchant d'utiliser la messagerie: 
 
-![](images/loop2.png)
+![](images/loop2.PNG)
 
 **Contre-mesures:**
 
@@ -477,15 +477,15 @@ De la même manière qu'un message envoyé à un autre utilisateur peut être ut
 
 Dans ce scénario, on imagine donc que quelqu'un veut supprimer tous les utilisateurs de la base de données. Pour cela, il faut que l'administrateur soit redirigé à son insu vers la page qui supprime un utilisateur, et cela jusqu'à ce qu'il n'y ait plus d'utilisateurs. Le code du message envoyé doit donc contenir une boucle et également supprimer le message suspect (le message a ici été écrit dans le corps du message pour qu'on puisse le voir en entier, mais il serait beaucoup plus discret de le mettre dans le sujet su message): 
 
-![](images/users1.png)
+![](images/users1.PNG)
 
 Lorsque l'administrateur ouvre ce message, voici le résultat:
 
-![](images/users2.png)
+![](images/users2.PNG)
 
 Etant donné que l'attaque n'est pas censée être discrète, il n'est pas nécessaire de rediriger l'administrateur vers la page sur laquelle il était à la base. Si on retourne sur la page des messages, le résultat suivant apparaît: 
 
-![](images/users3.png)
+![](images/users3.PNG)
 
 Plus aucun message! En réalité, ils n'ont pas été supprimés, ils ne sont juste plus affichés, parce que les utilisateurs qui les ont envoyés n'existent plus. Par contre, le message qui a causé la suppresion des utilisateurs a bel et bien été supprimé, et quand la situation aura été rétablie, il ne pourra pas être retrouvé.
 
