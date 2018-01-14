@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include_once('../models/users.php');
 include_once('../utils/check_session.php');
 include_once('../utils/check_admin.php');
@@ -9,7 +11,18 @@ if(isset($_POST['login']) and isset($_POST['role']) and isset($_POST['validity']
     if ($_POST['password'] != $_POST['password2']){
 	$wrong_password = "The two passwords should be identical!";
     }else{
-    $result = create_user($_POST['login'], $_POST['role'], $_POST['validity'], crypt($_POST['password']));
+
+    //Generate random salt
+    $salt = "";
+    $random = array_merge(range('A','Z'), range('a','z'), range(0,9));
+    for($i = 0; $i < 22; $i++) {
+        $salt .= $random[array_rand($random)];
+    }
+
+    //Add prefix
+    $salt_with_prefix = '$2a$04$'.$salt;
+    $result = create_user($_POST['login'], $_POST['role'], $_POST['validity'], crypt($_POST['password'], $salt_with_prefix));
+
     if(!$result){
 	$wrong_login = "This login already exists!";
     }

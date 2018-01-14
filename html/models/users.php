@@ -30,7 +30,17 @@ function change_user_password($user, $old, $new){
     $file_db = connect();
     
         if(!is_null(authentify_user($user, $old))){
-	    $password = crypt($new);
+	    
+	    //Generate random salt
+            $salt = "";
+            $random = array_merge(range('A','Z'), range('a','z'), range(0,9));
+            for($i = 0; $i < 22; $i++) {
+               $salt .= $random[array_rand($random)];
+            }
+
+            //Add prefix
+            $salt_with_prefix = '$2a$04$'.$salt;  
+	    $password = crypt($new, $salt_with_prefix);
 	    
 	    $result = $file_db->prepare("UPDATE users SET password = ?  WHERE login = ?");
 	    $result->execute(array($password, $user));
