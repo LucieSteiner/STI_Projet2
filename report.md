@@ -358,100 +358,174 @@ En utilisant la faille XSS comme cela a été décrit dnas le scénario 4, un at
 * Informer les employés pour le permettre de reconnaître ce genre d'attaques.
 
 ### Scénario 7 : Suppression de messages envoyés ###
-Petite phrase pour expliquer ce que permet cette attaque.
 
-**Catégorie:**
+Ce scénario nécessite d'être déjà connecté à l'application.
 
-**Impact:** 
+**Catégorie:** R (Repudiation) / T (Tampering) / E (Elevation of privilege)
 
-**Source de menace:**
+**Impact:** bas si utilisé de façon isolée, moyen si utilisé de manière intensive (voir scénario 9)
+
+**Source de menace:** Employés avec suffisamment de compétences
 
 **Motivations:**
 
-**Element(s) du système attaqué:**
+* Faire en sorte que le destinataire ne voie pas le message qu'on lui a envoyé (pour des raisons diverses).
+
+**Element(s) du système attaqué:** La base de données, plus précisément les messages stockés dedans.
 
 **Faille(s) permettant l'attaque:**
 
+* Cross-site scripting (XSS) lors de l'écriture de messages.
+
 **Scénario d'attaque:**
 
+Imaginons que deux employés utilisent le site de messagerie de l'entreprise pour discuter d'une affaire illégale. Accidentellement, l'un des deux envoie un message concernant cette affaire à leur patron. Il doit donc trouver un moyen de le supprimer avant que son patron ne découvre leur afffaire et les vire.
+
+![](images/delete1.png)
+ 
+L'employé en question peut supprimer ce message en envoyant un second message au patron qui contient du code. Le code en question sera executé du côté du patron et utilisera le fait que seul le destinataire d'un message est autorisé à le supprimer. Ce code utilise donc les privilèges du patron pour supprimer le premier message. 
+Le message que l'employé enverra à son patron pourrait être le suivant: 
+
+![](images/delete2.png)
+
+
+*Note*: On part ici du principe que l'utilisateur a un moyen de connaître l'id des messages qu'il envoie. Comme l'id des messages est simplement incrémenté, il peut s'envoyer un message à lui-même et en déduire l'id du prochain message.
+
+Lorsque le patron l'ouvre, il sera redirigé vers la page de suppresion de message, puis de nouveau vers sa messagerie, où le premier e-mail aura disparu:
+
+![](images/delete3.png)
+
+Evidememnt, ce n'est pas très discret, et le patron pourrait décider d'ouvrir d'abord le premier message. L'employé peut donc décider de mettre son code dans le sujet du message, qui sera directement affiché:
+
+![](images/delete5.png)
+
+Cette fois le patron sera directement redirigé vers la page de suppression de messages en se connectant. Par contre, comme il sera par la suite redirigé vers sa messagerie, l'employé doit également supprimer le message contant le code pour éviter une boucle infinie de redirection. Le message suivant devrait faire l'affaire:
+
+![](images/delete7.png) 
+
+Lorsque le patron ouvre sa messagerie, voici ce qu'il obtient:
+
+![](images/delete8.png)
+
+Les deux messages suspects ont disparu.
+
+
 **Contre-mesures:**
+
+* Contrôler le contenu des champs "Sujet" et "Message", pour empêcher l'injection de code. 
 
 ### Scénario 8 : Ralentissement de l'application ###
-Petite phrase pour expliquer ce que permet cette attaque.
 
-**Catégorie:**
+Ce scénario nécessite d'être déjà connecté à l'application. 
 
-**Impact:** 
+**Catégorie:** D (Denial of Service)
 
-**Source de menace:**
+**Impact:** moyen 
+
+**Source de menace:** Employé avec des compétences suffisantes, Hackers, Concurrent
 
 **Motivations:**
 
-**Element(s) du système attaqué:**
+* Pour les employés, le but peut être d'embêter un autre employé.
+* Pour un hacker, il peut d'agir d'un défi.
+* Pour les concurrents, cela peut être un moyen de perturber la communication dans l'entreprise.
+
+**Element(s) du système attaqué:** Disponibilité de l'application (pour un utilisateur)
 
 **Faille(s) permettant l'attaque:**
 
+* Cross-site scripting (XSS) sur la page d'écriture de message. 
+
 **Scénario d'attaque:**
 
+Nous avons vu dans le scénario précédent comment il était possible de faire une boucle infinie de redirection. Il suffit donc de réutiliser le même principe, par exemple en écrivant le message suivant: 
+
+![](images/loop1.png)
+
+Lorsque le destinataire se connectera, il sera coincé dans une boucle de redirection l'empêchant d'utiliser la messagerie: 
+
+![](images/loop2.png)
+
 **Contre-mesures:**
+
+* Contrôler le contenu des champs "Sujet" et "Message", pour empêcher l'injection de code. 
 
 ### Scénario 9 : Suppression des utilisateurs ###
-Petite phrase pour expliquer ce que permet cette attaque.
 
-**Catégorie:**
+Ce scénario est basé sur le scénario 7. Il reprend les mêmes principes pour une utilisation plus large.
 
-**Impact:** 
+**Catégorie:** T/E/D
 
-**Source de menace:**
+**Impact:** haut (surtout s'il n'y a pas de backup)
+
+**Source de menace:** Hackers, Employés mécontents avec les compétences nécessaires, Concurrents
 
 **Motivations:**
 
-**Element(s) du système attaqué:**
+* Pour un hacker, le but peut être de s'amuser. 
+* Pour un employé mécontent (ou un ex-employé) et pour les concurrents, le but peut être d'empêcher le bon fonctionnement de l'entreprise en rendant le système de messagerie inutilisable.
+
+**Element(s) du système attaqué:** La base de données et indirectment la disponibilité de l'application (sans utilisateur, elle n'est pas très utile).
 
 **Faille(s) permettant l'attaque:**
 
+- Cross-site scripting sur la page d'écriture de message.
+
 **Scénario d'attaque:**
 
+De la même manière qu'un message envoyé à un autre utilisateur peut être utilisé pour supprimer les messages de cet utilisateur, il est possible d'utiliser un message pour avoir accès à des fonctionnalités réservées à un administrateur. La seule qui ne nécessite pas d'étape intermédiaire est celle de suppression d'un utilisateur. 
+
+Dans ce scénario, on imagine donc que quelqu'un veut supprimer tous les utilisateurs de la base de données. Pour cela, il faut que l'administrateur soit redirigé à son insu vers la page qui supprime un utilisateur, et cela jusqu'à ce qu'il n'y ait plus d'utilisateurs. Le code du message envoyé doit donc contenir une boucle et également supprimer le message suspect (le message a ici été écrit dans le corps du message pour qu'on puisse le voir en entier, mais il serait beaucoup plus discret de le mettre dans le sujet su message): 
+
+![](images/users1.png)
+
+Lorsque l'administrateur ouvre ce message, voici le résultat:
+
+![](images/users2.png)
+
+Etant donné que l'attaque n'est pas censée être discrète, il n'est pas nécessaire de rediriger l'administrateur vers la page sur laquelle il était à la base. Si on retourne sur la page des messages, le résultat suivant apparaît: 
+
+![](images/users3.png)
+
+Plus aucun message! En réalité, ils n'ont pas été supprimés, ils ne sont juste plus affichés, parce que les utilisateurs qui les ont envoyés n'existent plus. Par contre, le message qui a causé la suppresion des utilisateurs a bel et bien été supprimé, et quand la situation aura été rétablie, il ne pourra pas être retrouvé.
+
 **Contre-mesures:**
+
+* Contrôler le contenu des champs "Sujet" et "Message", pour empêcher l'injection de code. 
 
 ### Scénario 10: Récupération des mots de passe à partir des hash ###
-Petite phrase pour expliquer ce que permet cette attaque.
 
-**Catégorie:**
+Ce scénario part du principe que l'attaquant a pu obtenir les hash des mots de passe sotckés dans la base de données par un moyen qui nous est inconnu.
 
-**Impact:** 
+**Catégorie:** I (Information disclosure)
 
-**Source de menace:**
+**Impact:** haut
 
-**Motivations:**
-
-**Element(s) du système attaqué:**
-
-**Faille(s) permettant l'attaque:**
-
-**Scénario d'attaque:**
-
-**Contre-mesures:**
-
-### Scénario 1 : Titre ###
-Petite phrase pour expliquer ce que permet cette attaque.
-
-**Catégorie:**
-
-**Impact:** 
-
-**Source de menace:**
+**Source de menace:** Cybercrime, Hacker
 
 **Motivations:**
 
-**Element(s) du système attaqué:**
+* Pour les hackers, le but est seulement de s'amuser.
+* Pour les cybercriminels, le but peut être de revendre les mots de passe trouvés (les utilisateurs utilisent souvent le même mot de passe pour plusieurs sites) ou de les utiliser directement sur certains sites dans le but de gagner de l'argent.
+
+**Element(s) du système attaqué:** Base de données, Employés et Administrateurs
 
 **Faille(s) permettant l'attaque:**
 
+* Algorithme de hachage avec paramètres par défaut
+
 **Scénario d'attaque:**
+
+Si une manière d'accéder à la base de données nous a échappé et qu'un attanquant est capable de récupérer les hash des mots de passe, la seule chose qui peut l'empêcher d'obtenir les mots de passe est un algorithme de hachage suffisamment sûr. Dans le cas de notre application, nous avons simplement utilisé la fonction crypt(), avec les paramètres par défaut.
+
+La documentation de php sur la fonction crypt() nous indique que cette fonction est faible lorsqu'elle est utilisée avec comme seul paramètre la valeur à hacher. L'algorithme de hachage est MD5, qui est connu pour ne plus être sûr et le salt utilisé dépend de l'implémentation. 
+
+Ces faiblesses étant connues depuis longtemps, il est probable que des techniques pour récupérer les mots de passe à partir des hash existent déjà (par exemple si la valeur du salt utilisé est connue, des rainbow tables ont pu être calculées).
 
 **Contre-mesures:**
 
+* Utiliser un algorithme de hachage plus sûr (Blowfish)
+* Générer un sel (*salt*) random lors de la création d'un nouvel utilisateur et le stocker avec l'utilisateur dans la base de données
 
 ## Contre-mesures ##
 
