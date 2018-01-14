@@ -325,7 +325,7 @@ L'attaquant peut ensuite utiliser ces éléments pour se représenter l'architec
 
 **Contre-mesures:**
 
-* Ajouter un fichier .htaccess à la racine des dossiers qui ne doivent pas être accessibles
+* Ajouter un fichier index.php à la racine des dossiers qui ne doivent pas être accessibles, contenant une redirection vers une autre page.
 
 ### Scénario 6 : Hameçonnage ###
 
@@ -536,14 +536,52 @@ Ces faiblesses étant connues depuis longtemps, il est probable que des techniqu
 
 ### Utiliser SSL/TLS ###
 
-### Contrôles pour emêcher XSS ###
+### Contrôles pour empêcher XSS ###
 
 ### Renforcer les identification de session ###
 strict mode + regenerate
 
 ### Empêcher l'accès aux répertoires ###
-htaccess
+
+**Scénario d'attaque 5**
+
+Cette contre-mesure est extrêmement simple. Il suffit d'ajouter à la racine des différents répertoires un fichier index.php qui redirige vers une autre page: 
+
+![](images/repertoire_fix.PNG)
+
+ https://openclassrooms.com/courses/protegez-vous-efficacement-contre-les-failles-web/protegez-vos-repertoires
 
 ### Renforcer l'algorithme de hachage des mots de passe ###
+
+**Scénario d'attaque 10**
+
+L'algorithme utilisé par défaut est MD5, avec un salt dépendant de l'implémentation. On reconnait MD5 au préfixe $1$:
+
+![](images/crypt_avant.PNG)
+
+L'algorithme de hachage recommandé est Blowfish, avec un hash différent pour chaque mot de passe. La partie du code contenant l'appel à la fonction crypt(9 lors de la création d'un nouvel utilisateur doit donc être modifiée:
+
+![](images/crypt_avant2.PNG)
+
+Comme on le voit, actuellement il n'y a qu'un seul paramètre. pour utiliser blowfish, il faut une deuxième paramètre (salt) avec le format suivant: $2a$un nombre entre 04 et 31$sel de 22 caractères. Cela peut être fait au moyen du code suivant: 
+
+![](images/crypt_apres.PNG)
+http://www.the-art-of-web.com/php/blowfish-crypt/
+
+Il n'est pas nécessaire de modifier la vérification de mot de passe. La fonction crypt() parse le hash pour retrouver l'algorithme utilisé et le salt. On voit que quand on crée un nouvel utilisateur, son hash est différent:
+
+![](images/crypt_apres2.PNG)
+
+On peut confirmer que tout fonctionne en se connectant avec cet utilisateur. Le modification de l'appel la fonction crypt() doit également être fait sur la page de changement de mot de passe: 
+
+![](images/crypt_apres3.PNG)
+
+Une fois cette modification faite, les utilisateurs qui modifient leur mot de passe auront un hash plus fort: 
+
+![](images/crypt_apres4.PNG)
+
+Le script de création de base de données doit également être mis à jour:
+
+![](images/crypt_apres5.PNG)
 
 ## Conclusion ##
