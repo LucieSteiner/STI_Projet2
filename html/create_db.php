@@ -28,8 +28,18 @@
  		    FOREIGN KEY(sender) REFERENCES users(id),
 		    FOREIGN KEY(receiver) REFERENCES users(id) )");
 
+    //Generate random salt
+    $salt = "";
+    $random = array_merge(range('A','Z'), range('a','z'), range(0,9));
+    for($i = 0; $i < 22; $i++) {
+        $salt .= $random[array_rand($random)];
+    }
+
+    //Add prefix
+    $salt_with_prefix = '$2a$04$'.$salt;
+    
     $admin = array('login' => 'admin',
-                   'password' => crypt('admin'),
+                   'password' => crypt('admin', $salt_with_prefix),
                    'validity' => 1,
 		   'role' => 'admin');
 
