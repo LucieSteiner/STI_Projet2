@@ -188,7 +188,7 @@ Cette attaque permet, comme la précédente, d'accéder aux fonctionnalités de 
 
 Une personne malveillante peut utiliser un outil pour tenter de se connecter en testant un grand nombre de combinaisons de caractères avec un outil approprié. Le fait que le nombre de tentatives ne soit pas limité et que le processus de login est très simple permet de faire cette attaque facilement. 
 
-Ici, la puissance de cette attaque est renforcée par les failles présentées dnas le scénario précédent. Plus les mots de passe sont longs, plus le bruteforce prendra de temps.
+Ici, la puissance de cette attaque est renforcée par les failles présentées dans le scénario précédent. Plus les mots de passe sont longs, plus le bruteforce prendra de temps.
 
 **Contre-mesures:**
 
@@ -558,7 +558,7 @@ L'autre élément à mettre en place est de faire en sort que l'identifiant de s
 
 ![](images/session_code.PNG)
 
-la même ligne doit être ajoutée dnas le fichier utils/logout.php:
+la même ligne doit être ajoutée dans le fichier utils/logout.php:
 
 ![](images/session_logout.PNG)
 
