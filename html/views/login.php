@@ -1,12 +1,12 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 include_once('../models/users.php');
 $wrong_cred = null;
 if (!empty ($_POST['login'])  and !empty($_POST['password'])){
     $role = authentify_user($_POST['login'], $_POST['password']);
+   
     if (!is_null($role)){
 	session_start();
+	session_regenerate_id();
 	$_SESSION['user'] = $_POST['login'];
 	$_SESSION['role'] = $role;
         header('Location: ../views/messages.php');
