@@ -529,4 +529,21 @@ Ces faiblesses étant connues depuis longtemps, il est probable que des techniqu
 
 ## Contre-mesures ##
 
+### Mots de passe forts ###
++ recommendation
+
+### Limiter le nombre de tentatives de login ###
+
+### Utiliser SSL/TLS ###
+
+### Contrôles pour emêcher XSS ###
+
+### Renforcer les identification de session ###
+strict mode + regenerate
+
+### Empêcher l'accès aux répertoires ###
+htaccess
+
+### Renforcer l'algorithme de hachage des mots de passe ###
+
 ## Conclusion ##
