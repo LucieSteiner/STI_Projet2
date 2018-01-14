@@ -273,7 +273,7 @@ Comme on le voit, lorsque l'administrateur ouvre le message, il effectuera autom
 
 ![](images/xss6.png)
 
-L'attaquant aura donc reçu la requête contenant le cookie de l'administrateur. Il n'aura donc ensuite plus qu'à remplacer la valeur de son propre cookie par celle du cookie de l'administrateur et il aura accès à sa session. Evidemment, un bon attaquant, fera en sorte que l'administraateur ne se rende pas compte que cette requête a été envoyée, mais nous ne rentrerons pas dans ces détails ici. 
+L'attaquant aura donc reçu la requête contenant le cookie de l'administrateur. Il n'aura donc ensuite plus qu'à remplacer la valeur de son propre cookie par celle du cookie de l'administrateur et il aura accès à sa session. Evidemment, un bon attaquant, fera en sorte que l'administrateur ne se rende pas compte que cette requête a été envoyée, mais nous ne rentrerons pas dans ces détails ici. 
 
 Le fait que le cookie de l'administrateur puisse être utilisé aussi facilement une fois récupérer vient du fait que les cookies de session PHP sont ici utilisés avec leur configuration de base. Ils ne sont donc jamais modifiés avant la fin de la session et il est possible de fournir un identifiant de session sans qu'il ait été initialisé.
 
@@ -333,7 +333,7 @@ Ce scénario nécessite d'être déjà connecté à l'application.
 
 **Catégorie:** ? (revenir dessus après) S/I/
 
-**Impact:** moyen (dépend du niveau d'information des emplyés)
+**Impact:** moyen (dépend du niveau d'information des employés)
 
 **Source de menace:** Cybercriminels
 
@@ -350,7 +350,7 @@ Ce scénario nécessite d'être déjà connecté à l'application.
 
 **Scénario d'attaque:**
 
-En utilisant la faille XSS comme cela a été décrit dnas le scénario 4, un attaquant peut ajouter du code dans un message dans le but d'afficher à celui qui l'ouvrira une fenêtre lui demandant d'entrer certaines informations (informations de connexion, numéro de carte de crédit ou autre). Plus la fenêtre affichée est crédible, plus l'utilisateur sera susceptible d'y croire et de donner des informations personnelles. 
+En utilisant la faille XSS comme cela a été décrit dans le scénario 4, un attaquant peut ajouter du code dans un message dans le but d'afficher à celui qui l'ouvrira une fenêtre lui demandant d'entrer certaines informations (informations de connexion, numéro de carte de crédit ou autre). Plus la fenêtre affichée est crédible, plus l'utilisateur sera susceptible d'y croire et de donner des informations personnelles. 
 
 **Contre-mesures:**
 
