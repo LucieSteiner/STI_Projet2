@@ -157,7 +157,7 @@ Une autre faiblesse actuelle est que seuls les administrateurs peuvent créer de
 
 **Contre-mesures:**
 
-* Forcer les utilisateurs à choisir un mot de passe fort (au moins 8 caractères, lettres et chiffres, maj/min, ponctuation)
+* Forcer les utilisateurs à choisir un mot de passe fort (au moins 8 caractères, lettres et chiffres, maj/min)
 * Ajouter une recommendation (« Le mot de passe ne doit pas contenir votre login, votre nom ou prénom, le nom de l’entreprise ou de l’application. Si possible, choisissez un mot de passe qui n’a pas de sens. »)
 * Pour les administrateurs : Générer un mot de passe aléatoire pour les nouveaux utilisateurs et le leur communiquer de manière sécurisée.
 
@@ -530,7 +530,19 @@ Ces faiblesses étant connues depuis longtemps, il est probable que des techniqu
 ## Contre-mesures ##
 
 ### Mots de passe forts ###
-+ recommendation
+
+La force des mots de passe doit être testée sur la page de création d'utilisateur, ainsi que sur la page de changement de mot de passe.
+Pour que le mot de passe soit considéré comme fort, il doit avoir au moins 8 caractères, dont au moins une lettre minuscule, une lettre majuscule et un chiffre. La manière la plus rapide vérifier tous ces critères est d'utiliser un regex (source: https://openclassrooms.com/courses/protegez-vous-efficacement-contre-les-failles-web/controlez-les-mots-de-passe). Le code suivant a donc été ajouté dans views/create_user.php:
+
+![](images/password.PNG)
+
+Il a également été ajouté sur la page de changement de mot de passe, views/profile.php:
+
+![](images/password3.PNG)
+
+Comme on peut le voir, lorsqu'un mot de passe ne correspond pas à tous les critères, un message d'erreur est affiché, rappelant les critères et ajoutant une recommendation: 
+
+![](images/password2.PNG)
 
 ### Limiter le nombre de tentatives de login ###
 
@@ -538,7 +550,7 @@ Ces faiblesses étant connues depuis longtemps, il est probable que des techniqu
 
 ### Contrôles pour empêcher XSS ###
 
-### Renforcer les identification de session ###
+### Renforcer les identifiants de session ###
 
 Un premier élément serait d'activer le *strict mode*, empêchant les utilisateurs de modifier leur identifiant de session. Malheureusement cette otpion n'est disponible qu'à partir de PHP 5.5.2.
 
