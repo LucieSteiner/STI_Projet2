@@ -280,7 +280,7 @@ Le fait que le cookie de l'administrateur puisse être utilisé aussi facilement
 **Contre-mesures:**
 
 * Contrôler le contenu des champs "Sujet" et "Message", pour empêcher l'injection de code. 
-* Refuser les id de session qui n'ont pas été initialisés avant (strict mode).
+* Refuser les id de session qui n'ont pas été initialisés avant (strict mode, seulement disponible à partir de PHP 5.5.2).
 * Régénerer l'id de session régulièrement (par exemple, lorsqu'un utilisateur se connecte).
 
 
@@ -539,7 +539,23 @@ Ces faiblesses étant connues depuis longtemps, il est probable que des techniqu
 ### Contrôles pour empêcher XSS ###
 
 ### Renforcer les identification de session ###
-strict mode + regenerate
+
+Un premier élément serait d'activer le *strict mode*, empêchant les utilisateurs de modifier leur identifiant de session. Malheureusement cette otpion n'est disponible qu'à partir de PHP 5.5.2.
+
+L'autre élément à mettre en place est de faire en sort que l'identifiant de session soit régénéré lorsque l'utilisateur se connecte ou se déconnecte. Ainsi, un identifiant de session récupéré par un attaquant ne sera pas valable longtemps. Il ne s'agit que d'une seule ligne à ajouter dans le fichier vies/login.php:
+
+![](images/session_code.PNG)
+
+la même ligne doit être ajoutée dnas le fichier utils/logout.php:
+
+![](images/session_logout.PNG)
+
+Une fois ces lignes ajoutées, on peut voir que l'identifiant de session est modifié quand l'utilisateur se connecte: 
+
+![](images/session1.PNG)
+![](images/session2.PNG)
+
+Le comportement est le même lorsque l'utilisateur se déconnecte.
 
 ### Empêcher l'accès aux répertoires ###
 
