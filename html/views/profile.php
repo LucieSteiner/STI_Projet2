@@ -1,8 +1,7 @@
 <?php
 include_once('../models/users.php');
 include_once('../utils/check_session.php');
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+
 $wrong_new = null;
 $wrong_old = null;
 $success = null;
@@ -10,6 +9,9 @@ $success = null;
 if(isset($_POST['old']) and isset($_POST['new']) and isset($_POST['new2'])){
     if($_POST['new'] != $_POST['new2']){
 	$wrong_new = 'The two new passwords must be identical!';
+    }
+    elseif(!preg_match('#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$#', $_POST['new'])) {
+        $wrong_new = "The password is not strong enough! Make sure it has a minimum length of 8, contains at least one lowercase letter, one uppercase letter and one number. It should not contain your name/login or the name of the enterprise.";
     }
     else{
     	if(change_user_password($_SESSION['user'], $_POST['old'], $_POST['new'])){
