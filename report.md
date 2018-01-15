@@ -1,16 +1,16 @@
 # STI Rapport étude de menaces #
 
 ## Introduction ##
-Ce rapport présente la deuxième partie du projet de Sécurité des Technologies Internet. Elle consiste en l'analyse et la sécurisaté de l'application web réalisée lors de la première partie du projet. Dans une premier temps, une analyse des menaces a été effectuée, afin de mettre en évidences les différentes menaces et les éléments à sécuriser. Ensuite, les différentes contre-mesures présentées ont été implémentées afin de sécuriser l'application. Le but final est que l'application garde les même fonctionnalités, mais présente moins de failles.
+Ce rapport présente la deuxième partie du projet de Sécurité des Technologies Internet. Elle consiste en l'analyse et la sécurisation de l'application web réalisée lors de la première partie du projet. Dans une premier temps, une analyse des menaces a été effectuée, afin de mettre en évidences les différentes menaces et les éléments à sécuriser. Ensuite, les différentes contre-mesures présentées ont été implémentées afin de sécuriser l'application. Le but final est que l'application garde les même fonctionnalités, mais présente moins de failles.
  
 ## Description du système ##
 
-Dans cette première partie, l'ojectif est de rassembler toutes les informations sur le système qui pourraient être utile pour identifier les menaces. Elle consiste principalement à savoir quels sont le sobjectifs du système, quels sont ses exigences en matière de sécurité et de quoi il est constitué.
+Dans cette première partie, l'ojectif est de rassembler toutes les informations sur le système qui pourraient être utile pour identifier les menaces. Elle consiste principalement à savoir quels sont les objectifs du système, quels sont ses exigences en matière de sécurité et de quoi il est constitué.
 
 ### Objectifs ###
-Le système a pour objectif de permettre aux employés de communiqués entre eux en s’envoyant des messages. Cela contribue au bon fonctionnement de l’entreprise en permettant aux informations de circuler correctement. La qualité du système contribue à la réputation de l’entreprise du point de vue des employés. Plus le système est adéquat et solide, plus les employés comprennent que la société prend en compte leurs besoins.
+Le système a pour objectif de permettre aux employés de communiquer entre eux en s’envoyant des messages. Cela contribue au bon fonctionnement de l’entreprise en permettant aux informations de circuler correctement. La qualité du système contribue à la réputation de l’entreprise du point de vue des employés. Plus le système est adéquat et solide, plus les employés comprennent que la société prend en compte leurs besoins.
 Hypothèses de sécurité
-Afin de garantir la sécurité, le système est uniquement utilisé par des employés de l’entreprise (aucune personne externe ne peut avoir un compte dessus). Les utilisateurs sont donc être créés par un administrateur. L’entreprise s’assure que les administrateurs sont des personnes de confiance.
+Afin de garantir la sécurité, le système est uniquement utilisé par des employés de l’entreprise (aucune personne externe ne peut avoir un compte dessus). Les utilisateurs sont donc censé être créés par un administrateur. L’entreprise s’assure que les administrateurs sont des personnes de confiance.
 
 ### Exigences ###
 
@@ -24,7 +24,7 @@ Finalement, le système doit pouvoir garantir une disponibilité d’au moins 99
 
 Les deux principaux éléments du système sont l’application et la base de données, qui contient les informations des utilisateurs et les messages. 
 
-Les utilisateurs du système peuvent les deux rôles suivants :
+Les utilisateurs du système peuvent avoir un des deux rôles suivants :
 
 * **Employé:** est autorisé à lire, écrire et supprimer des messages.
 * **Administrateur:** en plus de ce que peut faire un employé, est autorisé à gérer les utilisateurs (ajout, modification, suppression).
@@ -80,17 +80,17 @@ Un incident pourrait résulter en :
 
 ## Périmètre de sécurisation ##
 
-Afin de pouvoir sélectionner les éléments à sécuriser, nous avons établi une liste de priorités des différentes menaces. Les menaces se trouvant en haut de la liste sont celles que l'ont veut éviter à tout prix, et c'est donc ce séléments qui devront être sécurisés en premier:
+Afin de pouvoir sélectionner les éléments à sécuriser, nous avons établi une liste de priorités des différentes menaces. Les menaces se trouvant en haut de la liste sont celles que l'ont veut éviter à tout prix, et c'est donc ces éléments qui devront être sécurisés en premier:
 
-1.	**Accès à la zone admin :** Cela permettrait d’ajouter/de modifier ou de supprimer des utilisateurs , c equi est un gros problème. Le login doit donc être sécurisé au maximum. Il est aussi important de rechercher les failles qui permettraient d'y accéder autrement que par le login.
+1.	**Accès à la zone admin :** Cela permettrait d’ajouter/de modifier ou de supprimer des utilisateurs , ce qui est un gros problème. Le login doit donc être sécurisé au maximum. Il est aussi important de rechercher les failles qui permettraient d'y accéder autrement que par le login.
 2.	**Accès au message des autres utilisateurs :** Pour garantir la confidentialité, il faut être sûr d'avoir identitifé toutes les failles qui pourraient permettre d'y accéder.
-3. **Message forgés :** S'il est possible de modifier l'expéditeur d'un message, cela pose un gros problème de confiance. 
+3. **Message forgés :** S'il est possible de modifier l'expéditeur d'un message, cela pose un gros problème de confiance et d'authenticité. 
 4.	**Modification/suppression des messages après envoi :** Egalement problématique, car cela peut nuire à la bonne communication dans l'entreprise.
 5.	**Récupération des mots de passe:** Comme cela nécessiterait d'abord de voler les hash, puis de retrouver les mots de passe correspondant, cette menace peut être évaluée plus tard.
  
 ## Sources de menaces ##
 
-Dans cette partie, les différents types de personnes qui pourraient potentiellement tenter de porter atteinte au système sont énumérées. Leurs motivation, leur cible et la potentialité qu'il attaque réellement le système sont également présentés.
+Dans cette partie, les différents types de personnes qui pourraient potentiellement tenter de porter atteinte au système sont énumérées. Leurs motivation, leur cible et la potentialité qu'ils attaquent réellement le système sont également présentés.
 
 ### Employés / utilisateurs malins ###
 
@@ -126,11 +126,11 @@ Dans cette partie, les différents types de personnes qui pourraient potentielle
 
 ## Scénarios d'attaques ##
 
-Cette partie du rapport présente tout d'abord la méthode catégorisation STRIDE qui sera utilisée, puis les différents scénarios d'attaque qui ont été imaginés. Chacun de ces scénarios contient des informations permettant de lui attribuer une priorité, ou simplement de le catégoriser comme l'impact que l'attaque aurait, les sources de menace, leurs motivations, les éléments attqués et les failles permettant l'attaque. Les scénarios sont ensuite décrits en détail avec, pour certains, une petite démonstration de l'attaque. Les contre-mesures sont ensiute nommées. Elles seront décrites plus en détail dnas le chapitre suivant.
+Cette partie du rapport présente tout d'abord la méthode catégorisation STRIDE qui sera utilisée, puis les différents scénarios d'attaque qui ont été imaginés. Chacun de ces scénarios contient des informations permettant de lui attribuer une priorité, ou simplement de le catégoriser comme l'impact que l'attaque aurait, les sources de menace, leurs motivations, les éléments attqués et les failles permettant l'attaque. Les scénarios sont ensuite décrits en détail avec, pour certains, une petite démonstration de l'attaque. Les contre-mesures sont ensuite nommées. Elles seront décrites plus en détail dans le chapitre suivant.
 
 ### STRIDE ###
 
-La méthode de catégorisation STRIDE permet d'identitier le but des attaquants pour une menace donnée. STRIDE signifie: 
+La méthode de catégorisation STRIDE permet d'identifier le but des attaquants pour une menace donnée. STRIDE signifie: 
 
 * Spoofing
 * Tampering
@@ -179,7 +179,7 @@ Lorsqu’on crée un utilisateur ou que l’on change son mot de passe, il n’e
 -	1234
 -	12345678
 -	Abcd
-Une autre faiblesse actuelle est que seuls les administrateurs peuvent créer des nouveaux utilisateurs. L’avantage est que cela empêche des personnes externes de se créer un compte, mais l’inconvénient est que les administrateurs doivent mettre un mot de passe par défaut, que les utilisateurs sont censés modifier par la suite. Dans la réalité, le mot de passe par défaut sera souvent quelque chose de simple, pour simplifier la tâche à l’administrateur. Il peut s’agir par exemple du login, du nom de famille, ou d’une combinaison du prénom et du nom de famille. En ajoutant à ça le fait que plusieurs utilisateurs ne changeront pas très rapidement, voire jamais, tenter différentes combinaisons basées sur le nom des employés peut donner beaucoup de résultats. Les employés de l’entreprise sont ceux qui peuvent le mieux exploiter cette faiblesse, étant donné qu’ils connaissent la logique de choix des mots de passe.
+Une autre faiblesse actuelle est que seuls les administrateurs peuvent créer des nouveaux utilisateurs. L’avantage est que cela empêche des personnes externes de se créer un compte, mais l’inconvénient est que les administrateurs doivent mettre un mot de passe par défaut, que les utilisateurs sont censés modifier par la suite. Dans la réalité, le mot de passe par défaut sera souvent quelque chose de simple, pour simplifier la tâche à l’administrateur. Il peut s’agir par exemple du login, du nom de famille, ou d’une combinaison du prénom et du nom de famille. En ajoutant à ça le fait que plusieurs utilisateurs ne changeront pas très rapidement, voir jamais, tenter différentes combinaisons basées sur le nom des employés peut donner beaucoup de résultats. Les employés de l’entreprise sont ceux qui peuvent le mieux exploiter cette faiblesse, étant donné qu’ils connaissent la logique de choix des mots de passe.
 
 **Contre-mesures:**
 
@@ -189,7 +189,7 @@ Une autre faiblesse actuelle est que seuls les administrateurs peuvent créer de
 
 ### Scénario 2 : Bruteforce de mot de passe ###
 
-Cette attaque permet, comme la précédente, d'accéder aux fonctionnalités de l'application, mais elle demande plsu de compétences.
+Cette attaque permet, comme la précédente, d'accéder aux fonctionnalités de l'application, mais elle demande plus de compétences.
 
 **Catégorie:** S (Spoofing)
 
@@ -228,7 +228,7 @@ Comme dans les scénarios précédents, cette attaque permet de se connecter à 
 
 **Impact:** Haut (permet d'autres attaques)
 
-**Source de menace:** Employés capables d'utiliser Wireshark ou autres personnes ayant accès au reéseau interne de l'entreprise.
+**Source de menace:** Employés capables d'utiliser Wireshark ou autres personnes ayant accès au réseau interne de l'entreprise.
 
 **Motivations:**
 
@@ -301,7 +301,7 @@ Comme on le voit, lorsque l'administrateur ouvre le message, il effectuera autom
 
 L'attaquant aura donc reçu la requête contenant le cookie de l'administrateur. Il n'aura donc ensuite plus qu'à remplacer la valeur de son propre cookie par celle du cookie de l'administrateur et il aura accès à sa session. Evidemment, un bon attaquant, fera en sorte que l'administrateur ne se rende pas compte que cette requête a été envoyée, mais nous ne rentrerons pas dans ces détails ici. 
 
-Le fait que le cookie de l'administrateur puisse être utilisé aussi facilement une fois récupérer vient du fait que les cookies de session PHP sont ici utilisés avec leur configuration de base. Ils ne sont donc jamais modifiés avant la fin de la session et il est possible de fournir un identifiant de session sans qu'il ait été initialisé.
+Le fait que le cookie de l'administrateur puisse être utilisé aussi facilement une fois récupéré vient du fait que les cookies de session PHP sont ici utilisés avec leur configuration de base. Ils ne sont donc jamais modifiés avant la fin de la session et il est possible de fournir un identifiant de session sans qu'il ait été initialisé.
 
 **Contre-mesures:**
 
@@ -381,7 +381,7 @@ En utilisant la faille XSS comme cela a été décrit dans le scénario 4, un at
 **Contre-mesures:**
 
 * Contrôler le contenu des champs "Sujet" et "Message", pour empêcher l'injection de code. 
-* Informer les employés pour le permettre de reconnaître ce genre d'attaques.
+* Informer les employés pour leur permettre de reconnaître ce genre d'attaques.
 
 ### Scénario 7 : Suppression de messages envoyés ###
 
@@ -453,7 +453,7 @@ Ce scénario nécessite d'être déjà connecté à l'application.
 **Motivations:**
 
 * Pour les employés, le but peut être d'embêter un autre employé.
-* Pour un hacker, il peut d'agir d'un défi.
+* Pour un hacker, il peut s'agir d'un défi.
 * Pour les concurrents, cela peut être un moyen de perturber la communication dans l'entreprise.
 
 **Element(s) du système attaqué:** Disponibilité de l'application (pour un utilisateur)
@@ -546,7 +546,7 @@ Si une manière d'accéder à la base de données nous a échappé et qu'un atta
 
 La documentation de php sur la fonction crypt() nous indique que cette fonction est faible lorsqu'elle est utilisée avec comme seul paramètre la valeur à hacher. L'algorithme de hachage est MD5, qui est connu pour ne plus être sûr et le salt utilisé dépend de l'implémentation. 
 
-Ces faiblesses étant connues depuis longtemps, il est probable que des techniques pour récupérer les mots de passe à partir des hash existent déjà (par exemple si la valeur du salt utilisé est connue, des rainbow tables ont pu être calculées).
+Ces faiblesses étant connues depuis longtemps, il est probable que des techniques pour récupérer les mots de passe à partir des hash existent déjà (par exemple si aucun salt n'est utilisé, des rainbow tables ont pu être calculées).
 
 **Contre-mesures:**
 
@@ -605,7 +605,7 @@ Il faut maintenant mettre quelque chose en place pour que les connexions soient 
 
 ![](images/tentative_remove_connection.PNG)
 
-Il est important que ce fichier ne soit pas dans l'arborescence du site, sinon n'importe qui peut l'utiliser pour effecer les connexions. Pour la suite des opérations, ce fichier doit être placé sur /home/sti. 
+Il est important que ce fichier ne soit pas dans l'arborescence du site, sinon n'importe qui peut l'utiliser pour effacer les connexions. Pour la suite des opérations, ce fichier doit être placé sur /home/sti. 
 
 Ensuite, il faut automatiser le lancement de ce script. Cela peut être fait en utilisant *cron*, qui permet de lancer une commande, par exemple, tous les jours:
 
@@ -621,13 +621,13 @@ Cela signifie que tous les jours, à minuit, le script créé précédemment ser
 
 **Scénario d'attaque 3**
 
-Afin de s'assurer que totues les connections au site web sont sécurisé en SSL/TLS il suffit de rediriger les requêtes en HTTP vers la même page en HTTPS. Pour ce faire, il suffit de rajouter les lignes suivantes dans le fichier `/etc/httpd/conf/httpd.conf` dans la balise `<Directory "/var/www/html">`
+Afin de s'assurer que toutes les connections au site web sont sécurisé en SSL/TLS il suffit de rediriger les requêtes en HTTP vers la même page en HTTPS. Pour ce faire, il suffit de rajouter les lignes suivantes dans le fichier `/etc/httpd/conf/httpd.conf` dans la balise `<Directory "/var/www/html">`
 
 		RewriteEngine On
 		RewriteCond %{HTTPS} off
 		RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 
-Ceci est possible car le serveur contient déjà un certificat autosigné et apache est configuré pour l'utiliser. Pour un maximum de sécurité, un certificat signé par une authorité reconnue peut être mis à la place de ceux déjà en place dans le dossier `/etc/pki/tls/`. La clef privée se trouve sour `private/localhost.key` et le certificat sous `certs/localhost.crt`. 
+Ceci est possible car le serveur contient déjà un certificat autosigné et apache est configuré pour l'utiliser. Pour un maximum de sécurité, un certificat signé par une authorité reconnue peut être mis à la place de ceux déjà en place dans le dossier `/etc/pki/tls/`. La clef privée se trouve sour `private/localhost.key` et le certificat sous `certs/localhost.crt`. Mais pour cela, un nom de domaine est nécessaire.
 
 Une foir les modifications effectués, le serveur doit être redémarré. Ensuite, lorsqu'on accède à l'application, la page suivante s'affiche: 
 
@@ -658,7 +658,7 @@ Grâce à cette fonction, les balises et charactères spéciaux sont échappés 
 
 Un premier élément serait d'activer le *strict mode*, empêchant les utilisateurs de modifier leur identifiant de session. Malheureusement cette otpion n'est disponible qu'à partir de PHP 5.5.2.
 
-L'autre élément à mettre en place est de faire en sort que l'identifiant de session soit régénéré lorsque l'utilisateur se connecte ou se déconnecte. Ainsi, un identifiant de session récupéré par un attaquant ne sera pas valable longtemps. Il ne s'agit que d'une seule ligne à ajouter dans le fichier vies/login.php:
+L'autre élément à mettre en place est de faire en sorte que l'identifiant de session soit régénéré lorsque l'utilisateur se connecte ou se déconnecte. Ainsi, un identifiant de session récupéré par un attaquant ne sera pas valable longtemps. Il ne s'agit que d'une seule ligne à ajouter dans le fichier views/login.php:
 
 ![](images/session_code.PNG)
 
@@ -691,16 +691,16 @@ L'algorithme utilisé par défaut est MD5, avec un salt dépendant de l'impléme
 
 ![](images/crypt_avant.PNG)
 
-L'algorithme de hachage recommandé est Blowfish, avec un hash différent pour chaque mot de passe. La partie du code contenant l'appel à la fonction crypt(9 lors de la création d'un nouvel utilisateur doit donc être modifiée:
+L'algorithme de hachage recommandé est Blowfish, avec un salt différent pour chaque mot de passe. La partie du code contenant l'appel à la fonction `crypt()` lors de la création d'un nouvel utilisateur doit donc être modifiée:
 
 ![](images/crypt_avant2.PNG)
 
-Comme on le voit, actuellement il n'y a qu'un seul paramètre. pour utiliser blowfish, il faut une deuxième paramètre (salt) avec le format suivant: $2a$un nombre entre 04 et 31$sel de 22 caractères. Cela peut être fait au moyen du code suivant: 
+Comme on le voit, actuellement il n'y a qu'un seul paramètre. pour utiliser blowfish, il faut un deuxième paramètre (salt) avec le format suivant: $2a$un nombre entre 04 et 31$sel de 22 caractères. Cela peut être fait au moyen du code suivant: 
 
 ![](images/crypt_apres.PNG)
 http://www.the-art-of-web.com/php/blowfish-crypt/
 
-Il n'est pas nécessaire de modifier la vérification de mot de passe. La fonction crypt() parse le hash pour retrouver l'algorithme utilisé et le salt. On voit que quand on crée un nouvel utilisateur, son hash est différent:
+Il n'est pas nécessaire de modifier la vérification de mot de passe. La fonction `crypt()` parse le hash pour retrouver l'algorithme utilisé et le salt. On voit que quand on crée un nouvel utilisateur, son hash est différent:
 
 ![](images/crypt_apres2.PNG)
 
