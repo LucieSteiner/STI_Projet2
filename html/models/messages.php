@@ -2,6 +2,18 @@
 
 include_once('../utils/db.php');
 
+
+function sanitizer($data){
+    if(isset($data['message'])) $data['message'] = htmlspecialchars($data['message']);
+    if(isset($data['title'])) $data['title'] = htmlspecialchars($data['title']);
+    return $data;
+}
+
+function packingSanitizer($title,$message){
+    $data['title'] = $title;
+    $data['message'] = $message;
+    return sanitizer($data);
+}
 function get_messages($user){
     $file_db = connect();
 
@@ -10,7 +22,7 @@ function get_messages($user){
     $data = $result->fetchAll();
 
     close();
-    return $data;
+    return sanitizer($data);
 }
 
 function get_message_detail($id){
@@ -22,10 +34,14 @@ function get_message_detail($id){
     $data = $result->fetch();
 
     close();
-    return $data;
+    return sanitizer($data);
 }
 
 function write_message($from, $to, $title, $message){
+    $data = packingSanitizer($title,$message);
+    $title = $data['title'];
+    $message = $data['message'];
+
     $file_db = connect();
     date_default_timezone_set('UTC');
     $formatted_time = date('Y-m-d H:i:s', time());
