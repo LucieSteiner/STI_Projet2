@@ -630,6 +630,10 @@ Afin de s'assurer que totues les connections au site web sont sécurisé en SSL/
 
 Ceci est possible car le serveur contient déjà un certificat autosigné et apache est configuré pour l'utiliser. Pour un maximum de sécurité, un certificat signé par une authorité reconnue peut être mis à la place de ceux déjà en place dans le dossier `/etc/pki/tls/`. La clef privée se trouve sour `private/localhost.key` et le certificat sous `certs/localhost.crt`. 
 
+![](images/ssl1.png)
+
+On peut voir que si on fait une requête sur `http://localhost/` on est redirigé vers la version sécurisé sur laquelle le navigateur refait la même requête et la page sécurisé est affiché comme le montre le cadenas dans la barre d'URL.   
+
 ### Contrôles pour empêcher XSS ###
 
 **Scénarios d'attaque 4, 6, 7, 8 et 10**
