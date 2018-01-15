@@ -23,11 +23,11 @@
 
 4. Modifier la configuration pour utiliser HTTPS
 
-- Ajouter les lignes suivantes dans le fichier `/etc/httpd/conf/httpd.conf` dans la balise `<Directory "/var/www/html">`
+- Ajouter les lignes suivantes dans le fichier `/etc/httpd/conf/httpd.conf` dans la balise `<Directory "/var/www/html">`:
 
-	RewriteEngine On
-	RewriteCond %{HTTPS} off
-	RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+	    RewriteEngine On
+	    RewriteCond %{HTTPS} off
+	    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 
 5. Lancer le service httpd
 
