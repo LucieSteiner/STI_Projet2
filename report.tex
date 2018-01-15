@@ -34,6 +34,7 @@
 \usepackage{courier} % Required for the courier font
 \usepackage[utf8]{inputenc} % for accents
 %\usepackage[T1]{fontenc} % was for accents but not needed apparently
+\usepackage{adjustbox} % resizes images
 
 % Margins
 \topmargin=-0.45in
@@ -343,7 +344,7 @@ Un incident pourrait résulter en :
 
 \subsection{Data Flow Diagram}
 
-\includegraphics{images/dfd.png}
+\includegraphics[width=\textwidth]{images/dfd.png}
 
 \subsection{Périmètre de sécurisation}
 
@@ -713,34 +714,34 @@ autre utilisateur et en y introduisant le code qui nous permettra de
 voler sa session. Du code javascript peut simplement être placé dans le
 sujet ou le corps d'un message:
 
-\includegraphics{images/xss1.png}
+\includegraphics[width=\textwidth]{images/xss1.png}
 
 On voit que la faille XSS est présente car lorsque le destinataire ouvre
 le message, il obtient le résultat suivant:
 
-\includegraphics{images/xss2.png}
+\includegraphics[width=\textwidth]{images/xss2.png}
 
 Il s'agit ensuite d'utiliser cette faille pour récupérer le cookie de
 l'administrateur. Avec Javascript, un cookie peut être affiché d'une
 manière très simple:
 
-\includegraphics{images/xss3.png}
+\includegraphics[width=\textwidth]{images/xss3.png}
 
 Comme on le voit, lorsque l'utilisateur ouvre ce message, son cookie est
 affiché:
 
-\includegraphics{images/xss4.png}
+\includegraphics[width=\textwidth]{images/xss4.png}
 
 Finalement, l'attaquant n'a qu'à envoyer ce cookie sur une page qu'il
 contrôle afin de l'afficher. Cela peut être fait avec une ligne de
 javascript:
 
-\includegraphics{images/xss5.png}
+\includegraphics[width=\textwidth]{images/xss5.png}
 
 Comme on le voit, lorsque l'administrateur ouvre le message, il
 effectuera automatiquement la requête suivante:
 
-\includegraphics{images/xss6.png}
+\includegraphics[width=\textwidth]{images/xss6.png}
 
 L'attaquant aura donc reçu la requête contenant le cookie de
 l'administrateur. Il n'aura donc ensuite plus qu'à remplacer la valeur
@@ -828,7 +829,7 @@ les URL suivants:
 
 Lorsque l'on entre une de ces URL, ont obtient le résultat suivant:
 
-\includegraphics{images/repertoire.png}
+\includegraphics[width=\textwidth]{images/repertoire.png}
 
 Les autres dossiers, contenant des fichiers définissant l'aspect du site
 (css, js, vendor) sont également accessibles.
@@ -940,7 +941,7 @@ l'un des deux envoie un message concernant cette affaire à leur patron.
 Il doit donc trouver un moyen de le supprimer avant que son patron ne
 découvre leur afffaire et les vire.
 
-\includegraphics{images/delete1.PNG}
+\includegraphics[width=\textwidth]{images/delete1.PNG}
 
 L'employé en question peut supprimer ce message en envoyant un second
 message au patron qui contient du code. Le code en question sera executé
@@ -949,7 +950,7 @@ message est autorisé à le supprimer. Ce code utilise donc les privilèges
 du patron pour supprimer le premier message. Le message que l'employé
 enverra à son patron pourrait être le suivant:
 
-\includegraphics{images/delete2.PNG}
+\includegraphics[width=\textwidth]{images/delete2.PNG}
 
 \emph{Note}: On part ici du principe que l'utilisateur a un moyen de
 connaître l'id des messages qu'il envoie. Comme l'id des messages est
@@ -960,13 +961,13 @@ Lorsque le patron l'ouvre, il sera redirigé vers la page de suppresion
 de message, puis de nouveau vers sa messagerie, où le premier e-mail
 aura disparu:
 
-\includegraphics{images/delete3.PNG}
+\includegraphics[width=\textwidth]{images/delete3.PNG}
 
 Evidememnt, ce n'est pas très discret, et le patron pourrait décider
 d'ouvrir d'abord le premier message. L'employé peut donc décider de
 mettre son code dans le sujet du message, qui sera directement affiché:
 
-\includegraphics{images/delete5.PNG}
+\includegraphics[width=\textwidth]{images/delete5.PNG}
 
 Cette fois le patron sera directement redirigé vers la page de
 suppression de messages en se connectant. Par contre, comme il sera par
@@ -974,11 +975,11 @@ la suite redirigé vers sa messagerie, l'employé doit également supprimer
 le message contant le code pour éviter une boucle infinie de
 redirection. Le message suivant devrait faire l'affaire:
 
-\includegraphics{images/delete7.PNG}
+\includegraphics[width=\textwidth]{images/delete7.PNG}
 
 Lorsque le patron ouvre sa messagerie, voici ce qu'il obtient:
 
-\includegraphics{images/delete8.PNG}
+\includegraphics[width=\textwidth]{images/delete8.PNG}
 
 Les deux messages suspects ont disparu.
 
@@ -1032,12 +1033,12 @@ Nous avons vu dans le scénario précédent comment il était possible de
 faire une boucle infinie de redirection. Il suffit donc de réutiliser le
 même principe, par exemple en écrivant le message suivant:
 
-\includegraphics{images/loop1.PNG}
+\includegraphics[width=\textwidth]{images/loop1.PNG}
 
 Lorsque le destinataire se connectera, il sera coincé dans une boucle de
 redirection l'empêchant d'utiliser la messagerie:
 
-\includegraphics{images/loop2.PNG}
+\includegraphics[width=\textwidth]{images/loop2.PNG}
 
 \textbf{Contre-mesures:}
 
@@ -1102,18 +1103,18 @@ supprimer le message suspect (le message a ici été écrit dans le corps
 du message pour qu'on puisse le voir en entier, mais il serait beaucoup
 plus discret de le mettre dans le sujet su message):
 
-\includegraphics{images/users1.PNG}
+\includegraphics[width=\textwidth]{images/users1.PNG}
 
 Lorsque l'administrateur ouvre ce message, voici le résultat:
 
-\includegraphics{images/users2.PNG}
+\includegraphics[width=\textwidth]{images/users2.PNG}
 
 Etant donné que l'attaque n'est pas censée être discrète, il n'est pas
 nécessaire de rediriger l'administrateur vers la page sur laquelle il
 était à la base. Si on retourne sur la page des messages, le résultat
 suivant apparaît:
 
-\includegraphics{images/users3.PNG}
+\includegraphics[width=\textwidth]{images/users3.PNG}
 
 Plus aucun message! En réalité, ils n'ont pas été supprimés, ils ne sont
 juste plus affichés, parce que les utilisateurs qui les ont envoyés
@@ -1216,18 +1217,18 @@ d'utiliser un regex (source:
 https://openclassrooms.com/courses/protegez-vous-efficacement-contre-les-failles-web/controlez-les-mots-de-passe).
 Le code suivant a donc été ajouté dans views/create\_user.php:
 
-\includegraphics{images/password.PNG}
+\includegraphics[width=\textwidth]{images/password.PNG}
 
 Il a également été ajouté sur la page de changement de mot de passe,
 views/profile.php:
 
-\includegraphics{images/password3.PNG}
+\includegraphics[width=\textwidth]{images/password3.PNG}
 
 Comme on peut le voir, lorsqu'un mot de passe ne correspond pas à tous
 les critères, un message d'erreur est affiché, rappelant les critères et
 ajoutant une recommendation:
 
-\includegraphics{images/password2.PNG}
+\includegraphics[width=\textwidth]{images/password2.PNG}
 
 \subsubsection{Limiter le nombre de tentatives de login}
 
@@ -1238,13 +1239,13 @@ Pour pouvoir vérifier le nombre de tentatives par adresse IP par jour,
 il faut pouvoir stocker ces informations et donc ajouter une table
 ``connexion'' dans la base de données:
 
-\includegraphics{images/tentative_db.PNG}
+\includegraphics[width=\textwidth]{images/tentative_db.PNG}
 
 Ensuite, il faut une fonction permettant d'ajouter des connexions et de
 vérifier le nombre de connexions ayant eu lieu depuis une certaine
 adresse IP ce jour-là:
 
-\includegraphics{images/tentative_model.PNG}
+\includegraphics[width=\textwidth]{images/tentative_model.PNG}
 
 Cette fonction compte le nombre d'occurences de l'adresse IP puis ajoute
 une connexion si le nombre d'occurences est inférieur à 10. Si le nombre
@@ -1255,23 +1256,23 @@ La page de login doit ensuite afficher ``Wrong credentials'' si
 l'adresse IP a encore droit à des tentatives et un message informant
 l'utilisateur que le nombre de tentatives maximum est atteint sinon:
 
-\includegraphics{images/tentative_login.PNG}
+\includegraphics[width=\textwidth]{images/tentative_login.PNG}
 
 On peut vérifier que tout cela fonctionne en entrant un mauvais
 login/mot de passe plusieurs fois. En dessous de 10 tentatives, on
 obtient le résultat suivant:
 
-\includegraphics{images/tentative_moins_10.PNG}
+\includegraphics[width=\textwidth]{images/tentative_moins_10.PNG}
 
 Et en dessus de 10 tentatives, le résultat suivant:
 
-\includegraphics{images/tentative_plus_10.PNG}
+\includegraphics[width=\textwidth]{images/tentative_plus_10.PNG}
 
 Il faut maintenant mettre quelque chose en place pour que les connexions
 soient supprimées chaque jour de la base de données. Pour cela, on va
 commencer par créer le script qui supprimera les connexions:
 
-\includegraphics{images/tentative_remove_connection.PNG}
+\includegraphics[width=\textwidth]{images/tentative_remove_connection.PNG}
 
 Il est important que ce fichier ne soit pas dans l'arborescence du site,
 sinon n'importe qui peut l'utiliser pour effacer les connexions. Pour la
@@ -1281,12 +1282,12 @@ Ensuite, il faut automatiser le lancement de ce script. Cela peut être
 fait en utilisant \emph{cron}, qui permet de lancer une commande, par
 exemple, tous les jours:
 
-\includegraphics{images/tentative_crontab.PNG}
+\includegraphics[width=\textwidth]{images/tentative_crontab.PNG}
 
 Cette commande ouvre l'éditeur Vi, qu'on utilise pour ajouter la ligne
 suivante:
 
-\includegraphics{images/tentative_crontab_detail.PNG}
+\includegraphics[width=\textwidth]{images/tentative_crontab_detail.PNG}
 
 Cela signifie que tous les jours, à minuit, le script créé précédemment
 sera appelé et les connexions seront remises à zéro.
@@ -1318,7 +1319,7 @@ nécessaire.
 Une foir les modifications effectués, le serveur doit être redémarré.
 Ensuite, lorsqu'on accède à l'application, la page suivante s'affiche:
 
-\includegraphics{images/ssl.PNG}
+\includegraphics[width=\textwidth]{images/ssl.PNG}
 
 Cet avertissement est normal, étant donné que le certificat est
 autosigné. Il faut donc ajouter l'exception en sélectionnant ``I
@@ -1326,7 +1327,7 @@ Understand the Risks'', puis ``Add Exception\ldots{}'' et enfin
 ``Confirm Security Exception''. Il ne sera pas nécessaire de répéter
 cette opération par la suite.
 
-\includegraphics{images/ssl1.png}
+\includegraphics[width=\textwidth]{images/ssl1.png}
 
 On peut voir que si on fait une requête sur \texttt{http://localhost/}
 on est redirigé vers la version sécurisé sur laquelle le navigateur
@@ -1343,13 +1344,13 @@ supplémentaire. Ceci a été fait à l'aide de la fonction
 \texttt{htmlspecialchars} au début de la fonction d'écriture dans la
 base de donnée.
 
-\includegraphics{images/sanitize.PNG}
-\includegraphics{images/sanitize3.PNG}
+\includegraphics[width=\textwidth]{images/sanitize.PNG}
+\includegraphics[width=\textwidth]{images/sanitize3.PNG}
 
 Grâce à cette fonction, les balises et charactères spéciaux sont
 échappés et affichés correctement.
 
-\includegraphics{images/xss_impl1.png}
+\includegraphics[width=\textwidth]{images/xss_impl1.png}
 
 \subsubsection{Renforcer les identifiants de session}
 
@@ -1365,17 +1366,17 @@ ou se déconnecte. Ainsi, un identifiant de session récupéré par un
 attaquant ne sera pas valable longtemps. Il ne s'agit que d'une seule
 ligne à ajouter dans le fichier views/login.php:
 
-\includegraphics{images/session_code.PNG}
+\includegraphics[width=\textwidth]{images/session_code.PNG}
 
 la même ligne doit être ajoutée dans le fichier utils/logout.php:
 
-\includegraphics{images/session_logout.PNG}
+\includegraphics[width=\textwidth]{images/session_logout.PNG}
 
 Une fois ces lignes ajoutées, on peut voir que l'identifiant de session
 est modifié quand l'utilisateur se connecte:
 
-\includegraphics{images/session1.PNG}
-\includegraphics{images/session2.PNG}
+\includegraphics[width=\textwidth]{images/session1.PNG}
+\includegraphics[width=\textwidth]{images/session2.PNG}
 
 Le comportement est le même lorsque l'utilisateur se déconnecte.
 
@@ -1387,7 +1388,7 @@ Cette contre-mesure est extrêmement simple. Il suffit d'ajouter à la
 racine des différents répertoires un fichier index.php qui redirige vers
 une autre page:
 
-\includegraphics{images/repertoire_fix.PNG}
+\includegraphics[width=\textwidth]{images/repertoire_fix.PNG}
 
 https://openclassrooms.com/courses/protegez-vous-efficacement-contre-les-failles-web/protegez-vos-repertoires
 
@@ -1398,21 +1399,21 @@ https://openclassrooms.com/courses/protegez-vous-efficacement-contre-les-failles
 L'algorithme utilisé par défaut est MD5, avec un salt dépendant de
 l'implémentation. On reconnait MD5 au préfixe \(1\):
 
-\includegraphics{images/crypt_avant.PNG}
+\includegraphics[width=\textwidth]{images/crypt_avant.PNG}
 
 L'algorithme de hachage recommandé est Blowfish, avec un salt différent
 pour chaque mot de passe. La partie du code contenant l'appel à la
 fonction \texttt{crypt()} lors de la création d'un nouvel utilisateur
 doit donc être modifiée:
 
-\includegraphics{images/crypt_avant2.PNG}
+\includegraphics[width=\textwidth]{images/crypt_avant2.PNG}
 
 Comme on le voit, actuellement il n'y a qu'un seul paramètre. pour
 utiliser blowfish, il faut un deuxième paramètre (salt) avec le format
 suivant: \(2a\)un nombre entre 04 et 31\$sel de 22 caractères. Cela peut
 être fait au moyen du code suivant:
 
-\includegraphics{images/crypt_apres.PNG}
+\includegraphics[width=\textwidth]{images/crypt_apres.PNG}
 http://www.the-art-of-web.com/php/blowfish-crypt/
 
 Il n'est pas nécessaire de modifier la vérification de mot de passe. La
@@ -1420,22 +1421,22 @@ fonction \texttt{crypt()} parse le hash pour retrouver l'algorithme
 utilisé et le salt. On voit que quand on crée un nouvel utilisateur, son
 hash est différent:
 
-\includegraphics{images/crypt_apres2.PNG}
+\includegraphics[width=\textwidth]{images/crypt_apres2.PNG}
 
 On peut confirmer que tout fonctionne en se connectant avec cet
 utilisateur. Le modification de l'appel la fonction crypt() doit
 également être fait sur la page de changement de mot de passe:
 
-\includegraphics{images/crypt_apres3.PNG}
+\includegraphics[width=\textwidth]{images/crypt_apres3.PNG}
 
 Une fois cette modification faite, les utilisateurs qui modifient leur
 mot de passe auront un hash plus fort:
 
-\includegraphics{images/crypt_apres4.PNG}
+\includegraphics[width=\textwidth]{images/crypt_apres4.PNG}
 
 Le script de création de base de données doit également être mis à jour:
 
-\includegraphics{images/crypt_apres5.PNG}
+\includegraphics[width=\textwidth]{images/crypt_apres5.PNG}
 
 \subsection{Conclusion}
 
