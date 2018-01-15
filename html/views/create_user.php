@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 include_once('../models/users.php');
 include_once('../utils/check_session.php');
 include_once('../utils/check_admin.php');
@@ -10,8 +8,12 @@ $wrong_login = null;
 if(isset($_POST['login']) and isset($_POST['role']) and isset($_POST['validity']) and isset($_POST['password']) and isset($_POST['password2'])){
     if ($_POST['password'] != $_POST['password2']){
 	$wrong_password = "The two passwords should be identical!";
-    }else{
-
+    }
+    elseif(!preg_match('#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$#', $_POST['password'])) {
+        $wrong_password = "The password is not strong enough! Make sure it has a minimum length of 8, contains at least one lowercase letter, one uppercase letter and one number. It should not contain your name/login or the name of the enterprise.";
+    }
+    else{
+    
     //Generate random salt
     $salt = "";
     $random = array_merge(range('A','Z'), range('a','z'), range(0,9));

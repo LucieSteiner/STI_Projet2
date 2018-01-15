@@ -100,4 +100,5 @@ function create_user($user, $role, $validity, $password){
     return true;
 
 }
+
 ?>
