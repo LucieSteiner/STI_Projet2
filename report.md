@@ -1,8 +1,7 @@
 # STI Rapport étude de menaces #
 
 ## Introduction ##
-Ce rapport présente la d
-euxième partie du projet de Sécurité des Technologies Internet. Elle consiste en l'analyse et la sécurisaté de l'application web réalisée lors de la première partie du projet. Dans une premier temps, une analyse des menaces a été effectuée, afin de mettre en évidences les différentes menaces et les éléments à sécuriser. Ensuite, les différentes contre-mesures présentées ont été implémentées afin de sécuriser l'application. Le but final est que l'application garde les même fonctionnalités, mais présente moins de failles.
+Ce rapport présente la deuxième partie du projet de Sécurité des Technologies Internet. Elle consiste en l'analyse et la sécurisaté de l'application web réalisée lors de la première partie du projet. Dans une premier temps, une analyse des menaces a été effectuée, afin de mettre en évidences les différentes menaces et les éléments à sécuriser. Ensuite, les différentes contre-mesures présentées ont été implémentées afin de sécuriser l'application. Le but final est que l'application garde les même fonctionnalités, mais présente moins de failles.
  
 ## Description du système ##
 
@@ -630,6 +629,12 @@ Afin de s'assurer que totues les connections au site web sont sécurisé en SSL/
 
 Ceci est possible car le serveur contient déjà un certificat autosigné et apache est configuré pour l'utiliser. Pour un maximum de sécurité, un certificat signé par une authorité reconnue peut être mis à la place de ceux déjà en place dans le dossier `/etc/pki/tls/`. La clef privée se trouve sour `private/localhost.key` et le certificat sous `certs/localhost.crt`. 
 
+Une foir les modifications effectués, le serveur doit être redémarré. Ensuite, lorsqu'on accède à l'application, la page suivante s'affiche: 
+
+![](images/ssl.PNG)
+
+Cet avertissement est normal, étant donné que le certificat est autosigné. Il faut donc ajouter l'exception en sélectionnant "I Understand the Risks", puis "Add Exception..." et enfin "Confirm Security Exception". Il ne sera pas nécessaire de répéter cette opération par la suite.
+
 ![](images/ssl1.png)
 
 On peut voir que si on fait une requête sur `http://localhost/` on est redirigé vers la version sécurisé sur laquelle le navigateur refait la même requête et la page sécurisé est affiché comme le montre le cadenas dans la barre d'URL.   
@@ -640,9 +645,12 @@ On peut voir que si on fait une requête sur `http://localhost/` on est redirig�
 
 Nous avons décidé de valider les messages avant de les enregistrer dans la base de donnée afin de pouvoir les afficher sans effort supplémentaire. Ceci a été fait à l'aide de la fonction `htmlspecialchars` au début de la fonction d'écriture dans la base de donnée.
 
-![](images/xss_impl1.png)
+![](images/sanitize.PNG)
+![](images/sanitize3.PNG)
 
-Les balises et charactères spéciaux sont échappés et affiché correctement.
+Grâce à cette fonction, les balises et charactères spéciaux sont échappés et affichés correctement.
+
+![](images/xss_impl1.png)
 
 ### Renforcer les identifiants de session ###
 
