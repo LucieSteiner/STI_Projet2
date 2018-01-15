@@ -1,19 +1,27 @@
 <?php
 include_once('../models/users.php');
+include_once('../models/connexions.php');
+
 $wrong_cred = null;
+$not_allowed = null;
 if (!empty ($_POST['login'])  and !empty($_POST['password'])){
-    $role = authentify_user($_POST['login'], $_POST['password']);
+        if(check_if_allowed($_SERVER['REMOTE_ADDR'])){
+            $role = authentify_user($_POST['login'], $_POST['password']);
    
-    if (!is_null($role)){
-	session_start();
-	session_regenerate_id();
-	$_SESSION['user'] = $_POST['login'];
-	$_SESSION['role'] = $role;
-        header('Location: ../views/messages.php');
-    }
-    else{
-        $wrong_cred = 'Wrong credentials!';
-    }
+            if (!is_null($role)){
+	        session_start();
+	        session_regenerate_id();
+       	        $_SESSION['user'] = $_POST['login'];
+	        $_SESSION['role'] = $role;
+                header('Location: ../views/messages.php');
+            }
+            else{
+                $wrong_cred = 'Wrong credentials!';
+            }
+        }
+        else{
+            $not_allowed = "You tried to log in too many times today. Try again tomorrow!";
+        }
 }
 
 ?>
@@ -45,7 +53,10 @@ if (!empty ($_POST['login'])  and !empty($_POST['password'])){
 	      <div class="alert alert-danger" role="alert">
 		<?php echo $wrong_cred; ?>
 	      </div>
-	    
+	<?php } if (!is_null($not_allowed)) {?>
+	      <div class="alert alert-danger" role="alert">
+		<?php echo $not_allowed; ?>
+	      </div>
     <?php }?>
         <form action="../views/login.php" method="post">
           <div class="form-group">
