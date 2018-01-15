@@ -184,7 +184,7 @@ Une autre faiblesse actuelle est que seuls les administrateurs peuvent créer de
 **Contre-mesures:**
 
 * Forcer les utilisateurs à choisir un mot de passe fort (au moins 8 caractères, lettres et chiffres, maj/min)
-* Ajouter une recommendation (« Le mot de passe ne doit pas contenir votre login, votre nom ou prénom, le nom de l’entreprise ou de l’application. Si possible, choisissez un mot de passe qui n’a pas de sens. »)
+* Ajouter une recommendation (" Le mot de passe ne doit pas contenir votre login, votre nom ou prénom, le nom de l’entreprise ou de l’application. Si possible, choisissez un mot de passe qui n’a pas de sens. ")
 * Pour les administrateurs : Générer un mot de passe aléatoire pour les nouveaux utilisateurs et le leur communiquer de manière sécurisée.
 
 ### Scénario 2 : Bruteforce de mot de passe ###
