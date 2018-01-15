@@ -72,15 +72,20 @@ Un incident pourrait résulter en :
 
 ![](images/dfd.png)
 
-**TODO: A commenter**
+
 
 ## Périmètre de sécurisation ##
 
-**TODO: A remplir, pas bien compris ce qu'il doit y avoir dedans**
+Afin de pouvoir sélectionner les éléments à sécuriser, nous avons établi une liste de priorités des différentes menaces. Les menaces se trouvant en haut de la liste sont celles que l'ont veut éviter à tout prix, et c'est donc ce séléments qui devront être sécurisés en premier:
+
+1.	**Accès à la zone admin :** Cela permettrait d’ajouter/de modifier ou de supprimer des utilisateurs , c equi est un gros problème. Le login doit donc être sécurisé au maximum. Il est aussi important de rechercher les failles qui permettraient d'y accéder autrement que par le login.
+2.	**Accès au message des autres utilisateurs :** Pour garantir la confidentialité, il faut être sûr d'avoir identitifé toutes les failles qui pourraient permettre d'y accéder.
+3. **Message forgés :** S'il est possible de modifier l'expéditeur d'un message, cela pose un gros problème de confiance. 
+4.	**Modification/suppression des messages après envoi :** Egalement problématique, car cela peut nuire à la bonne communication dans l'entreprise.
+5.	**Récupération des mots de passe:** Comme cela nécessiterait d'abord de voler les hash, puis de retrouver les mots de passe correspondant, cette menace peut être évaluée plus tard.
+
  
 # Sources de menaces #
-
-**TODO: A rédiger mieux que ça!**
 
 ### Employés / utilisateurs malins ###
 
