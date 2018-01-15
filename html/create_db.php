@@ -28,6 +28,10 @@
  		    FOREIGN KEY(sender) REFERENCES users(id),
 		    FOREIGN KEY(receiver) REFERENCES users(id) )");
 
+    $file_db->exec("CREATE TABLE IF NOT EXISTS connexion (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT ,
+                    ip TEXT)");
+
     //Generate random salt
     $salt = "";
     $random = array_merge(range('A','Z'), range('a','z'), range(0,9));

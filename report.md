@@ -72,15 +72,17 @@ Un incident pourrait résulter en :
 
 ![](images/dfd.png)
 
-**TODO: A commenter**
-
 ## Périmètre de sécurisation ##
 
-**TODO: A remplir, pas bien compris ce qu'il doit y avoir dedans**
+Afin de pouvoir sélectionner les éléments à sécuriser, nous avons établi une liste de priorités des différentes menaces. Les menaces se trouvant en haut de la liste sont celles que l'ont veut éviter à tout prix, et c'est donc ce séléments qui devront être sécurisés en premier:
+
+1.	**Accès à la zone admin :** Cela permettrait d’ajouter/de modifier ou de supprimer des utilisateurs , c equi est un gros problème. Le login doit donc être sécurisé au maximum. Il est aussi important de rechercher les failles qui permettraient d'y accéder autrement que par le login.
+2.	**Accès au message des autres utilisateurs :** Pour garantir la confidentialité, il faut être sûr d'avoir identitifé toutes les failles qui pourraient permettre d'y accéder.
+3. **Message forgés :** S'il est possible de modifier l'expéditeur d'un message, cela pose un gros problème de confiance. 
+4.	**Modification/suppression des messages après envoi :** Egalement problématique, car cela peut nuire à la bonne communication dans l'entreprise.
+5.	**Récupération des mots de passe:** Comme cela nécessiterait d'abord de voler les hash, puis de retrouver les mots de passe correspondant, cette menace peut être évaluée plus tard.
  
 # Sources de menaces #
-
-**TODO: A rédiger mieux que ça!**
 
 ### Employés / utilisateurs malins ###
 
@@ -116,13 +118,29 @@ Un incident pourrait résulter en :
 
 ## Scénarios d'attaques ##
 
-Petite intro
-
-Remarque: les contre-mesures pour les différents scénarios sont nommées ici et seront décrites plsu en détail dans le chapitre suivant.
+Cette partie du rapport présente tout d'abord la méthode catégorisation STRIDE qui sera utilisée, puis les différents scénarios d'attaque qui ont été imaginés. Chacun de ces scénarios contient des informations permettant de lui attribuer une priorité, ou simplement de le catégoriser comme l'impact que l'attaque aurait, les sources de menace, leurs motivations, les éléments attqués et les failles permettant l'attaque. Les scénarios sont ensuite décrits en détail avec, pour certains, une petite démonstration de l'attaque. Les contre-mesures sont ensiute nommées. Elles seront décrites plus en détail dnas le chapitre suivant.
 
 ### STRIDE ###
 
-Expliquer STRIDE et comment on va l'utiliser pour catégoriser les attaques.
+La méthode de catégorisation STRIDE permet d'identitier le but des attaquants pour une menace donnée. STRIDE signifie: 
+
+* Spoofing
+* Tampering
+* Repudiation
+* Information Disclosure
+* Denial of Service
+* Elevation of Privilege
+
+Cela permet également de savoir comment contrer les menaces, chaque catégorie ayant un type de contrôle de sécurité associé:
+
+* Spoofing -> Authentication
+* Tampering -> Integrity
+* Repudiation -> Non-Repudiation
+* Information Disclosure -> Confidentiality
+* Denial of Service -> Availabiliy
+* Elevation of Privilege -> Authorization
+
+De manière générale, cela permet de catégoriser les menaces afin d'avoir une meilleure vue d'ensemble.
 
 ### Scénario 1 : Guessing de mot de passe ###
 
@@ -331,7 +349,7 @@ L'attaquant peut ensuite utiliser ces éléments pour se représenter l'architec
 
 Ce scénario nécessite d'être déjà connecté à l'application.
 
-**Catégorie:** ? (revenir dessus après) S/I/
+**Catégorie:** S (Spoofing), I (Information Disclosure)
 
 **Impact:** moyen (dépend du niveau d'information des employés)
 
@@ -454,7 +472,7 @@ Lorsque le destinataire se connectera, il sera coincé dans une boucle de redire
 
 Ce scénario est basé sur le scénario 7. Il reprend les mêmes principes pour une utilisation plus large.
 
-**Catégorie:** T/E/D
+**Catégorie:** T (Tampering)/E (Elevation of Privilege)/D (Denial of Service)
 
 **Impact:** haut (surtout s'il n'y a pas de backup)
 
@@ -545,6 +563,45 @@ Comme on peut le voir, lorsqu'un mot de passe ne correspond pas à tous les crit
 ![](images/password2.PNG)
 
 ### Limiter le nombre de tentatives de login ###
+
+https://openclassrooms.com/courses/protegez-vous-efficacement-contre-les-failles-web/l-attaque-par-force-brute
+Pour pouvoir vérifier le nombre de tentatives par adresse IP par jour, il faut pouvoir stocker ces informations et donc ajouter une table "connexion" dans la base de données: 
+
+![](images/tentative_db.PNG)
+
+Ensuite, il faut une fonction permettant d'ajouter des connexions et de vérifier le nombre de connexions ayant eu lieu depuis une certaine adresse IP ce jour-là: 
+
+![](images/tentative_model.PNG)
+
+Cette fonction compte le nombre d'occurences de l'adresse IP puis ajoute une connexion si le nombre d'occurences est inférieur à 10. Si le nombre d'occurences est supérieure à 10, cette adresse IP a dépassé le nombre maximum de tentatives en 24h. 
+
+La page de login doit ensuite afficher "Wrong credentials" si l'adresse IP a encore droit à des tentatives et un message informant l'utilisateur que le nombre de tentatives maximum est atteint sinon:
+
+![](images/tentative_login.PNG)
+
+On peut vérifier que tout cela fonctionne en entrant un mauvais login/mot de passe plusieurs fois. En dessous de 10 tentatives, on obtient le résultat suivant:
+
+![](images/tentative_moins_10.PNG)
+
+Et en dessus de 10 tentatives, le résultat suivant: 
+
+![](images/tentative_plus_10.PNG)
+
+Il faut maintenant mettre quelque chose en place pour que les connexions soient supprimées chaque jour de la base de données. Pour cela, on va commencer par créer le script qui supprimera les connexions: 
+
+![](images/tentative_remove_connection.PNG)
+
+Il est important que ce fichier ne soit pas dans l'arborescence du site, sinon n'importe qui peut l'utiliser pour effecer les connexions. Pour la suite des opérations, ce fichier doit être placé sur /home/sti. 
+
+Ensuite, il faut automatiser le lancement de ce script. Cela peut être fait en utilisant *cron*, qui permet de lancer une commande, par exemple, tous les jours:
+
+![](images/tentative_crontab.PNG)
+
+Cette commande ouvre l'éditeur Vi, qu'on utilise pour ajouter la ligne suivante: 
+
+![](images/tentative_crontab_detail.PNG)
+
+Cela signifie que tous les jours, à minuit, le script créé précédemment sera appelé et les connexions seront remises à zéro. 
 
 ### Utiliser SSL/TLS ###
 
