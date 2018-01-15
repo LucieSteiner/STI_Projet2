@@ -12,7 +12,7 @@
 
 2. Créer la base de données
 
-- Effectuer la commande: php /var/www/html/create_db.php 
+- Effectuer la commande: `php /var/www/html/create_db.php` 
 - La base de données est initialisée avec un utilisateur administrateur (login: admin, password: admin)
 
 3. Mettre en place la suppression quotidienne des tentatives de connexion de la base de données
@@ -23,7 +23,7 @@
 
 4. Modifier la configuration pour utiliser HTTPS
 
-- Ajouter les lignes suivantes dans le fichier /etc/httpd/conf/httpd.conf dans la balise <Directory "/var/www/html">
+- Ajouter les lignes suivantes dans le fichier `/etc/httpd/conf/httpd.conf` dans la balise `<Directory "/var/www/html">`
 
 	RewriteEngine On
 	RewriteCond %{HTTPS} off
