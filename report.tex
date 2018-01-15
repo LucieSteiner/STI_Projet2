@@ -32,7 +32,8 @@
 \usepackage{graphicx} % Required to insert images
 \usepackage{listings} % Required for insertion of code
 \usepackage{courier} % Required for the courier font
-\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+\usepackage[utf8]{inputenc} % for accents
+%\usepackage[T1]{fontenc} % was for accents but not needed apparently
 
 % Margins
 \topmargin=-0.45in
@@ -47,8 +48,9 @@
 % Set up the header and footer
 \pagestyle{fancy}
 \lhead{\hmwkAuthorName} % Top left header
-\chead{\hmwkClass\ (\hmwkClassInstructor\ \hmwkClassTime): \hmwkTitle} % Top center head
-\rhead{\firstxmark} % Top right header
+%\chead{\hmwkClass\ (\hmwkClassInstructor\ \hmwkClassTime): \hmwkTitle} % Top center head
+\rhead{\hmwkClass\ (\hmwkClassInstructor): \hmwkTitle} % Top center head
+%\rhead{\firstxmark} % Top right header
 \lfoot{\lastxmark} % Bottom left footer
 \cfoot{} % Bottom center footer
 \rfoot{Page\ \thepage\ of\ \protect\pageref{LastPage}} % Bottom right footer
@@ -62,7 +64,7 @@
 %----------------------------------------------------------------------------------------
 
 \definecolor{MyDarkGreen}{rgb}{0.0,0.4,0.0} % This is the color used for comments
-\lstloadlanguages{Perl} % Load Perl syntax for listings, for a list of other languages supported see: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/listings/listings.pdf
+\lstloadlanguages{php} % Load Perl syntax for listings, for a list of other languages supported see: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/listings/listings.pdf
 \lstset{language=Perl, % Use Perl in this example
         frame=single, % Single frame around code
         basicstyle=\small\ttfamily, % Use small true type font
@@ -149,7 +151,7 @@
 menaces} % Assignment title
 \newcommand{\hmwkDueDate}{Mardi,16\ janvier,\ 2018} % Due date
 \newcommand{\hmwkClass}{STI} % Course/class
-\newcommand{\hmwkClassTime}{10:30am} % Class/lecture time
+\newcommand{\hmwkClassTime}{} % Class/lecture time
 \newcommand{\hmwkClassInstructor}{Abraham Rubinstein} % Teacher/lecturer
 \newcommand{\hmwkAuthorName}{Lucie Steiner \& Yann Mahmoudi} % Your name
 
@@ -184,12 +186,12 @@ menaces} % Assignment title
 \tableofcontents
 \newpage
 
+\section{STI Rapport étude de menaces}
 
-\hypertarget{introduction}{%
-\subsection{Introduction}\label{introduction}}
+\subsection{Introduction}
 
 Ce rapport présente la deuxième partie du projet de Sécurité des
-Technologies Internet. Elle consiste en l'analyse et la sécurisaté de
+Technologies Internet. Elle consiste en l'analyse et la sécurisation de
 l'application web réalisée lors de la première partie du projet. Dans
 une premier temps, une analyse des menaces a été effectuée, afin de
 mettre en évidences les différentes menaces et les éléments à sécuriser.
@@ -197,19 +199,17 @@ Ensuite, les différentes contre-mesures présentées ont été implémentées
 afin de sécuriser l'application. Le but final est que l'application
 garde les même fonctionnalités, mais présente moins de failles.
 
-\hypertarget{description-du-systuxe8me}{%
-\subsection{Description du système}\label{description-du-systuxe8me}}
+\subsection{Description du système}
 
 Dans cette première partie, l'ojectif est de rassembler toutes les
 informations sur le système qui pourraient être utile pour identifier
-les menaces. Elle consiste principalement à savoir quels sont le
-sobjectifs du système, quels sont ses exigences en matière de sécurité
-et de quoi il est constitué.
+les menaces. Elle consiste principalement à savoir quels sont les
+objectifs du système, quels sont ses exigences en matière de sécurité et
+de quoi il est constitué.
 
-\hypertarget{objectifs}{%
-\subsubsection{Objectifs}\label{objectifs}}
+\subsubsection{Objectifs}
 
-Le système a pour objectif de permettre aux employés de communiqués
+Le système a pour objectif de permettre aux employés de communiquer
 entre eux en s'envoyant des messages. Cela contribue au bon
 fonctionnement de l'entreprise en permettant aux informations de
 circuler correctement. La qualité du système contribue à la réputation
@@ -218,12 +218,11 @@ adéquat et solide, plus les employés comprennent que la société prend en
 compte leurs besoins. Hypothèses de sécurité Afin de garantir la
 sécurité, le système est uniquement utilisé par des employés de
 l'entreprise (aucune personne externe ne peut avoir un compte dessus).
-Les utilisateurs sont donc être créés par un administrateur.
+Les utilisateurs sont donc censé être créés par un administrateur.
 L'entreprise s'assure que les administrateurs sont des personnes de
 confiance.
 
-\hypertarget{exigences}{%
-\subsubsection{Exigences}\label{exigences}}
+\subsubsection{Exigences}
 
 \textbf{Informations des utilisateurs:} Tout d'abord, aucune action ne
 doit être possible sans être authentifié. Les fonctionnalités liées à la
@@ -246,16 +245,15 @@ maintenance car le système sera principalement utilisé pendant les
 heures de bureau, il est important qu'il garantisse une certaine
 disponibilité afin de ne pas impacter le fonctionnement de l'entreprise.
 
-\hypertarget{constituants}{%
-\subsubsection{Constituants}\label{constituants}}
+\subsubsection{Constituants}
 
 Les deux principaux éléments du système sont l'application et la base de
 données, qui contient les informations des utilisateurs et les messages.
 
-Les utilisateurs du système peuvent les deux rôles suivants :
+Les utilisateurs du système peuvent avoir un des deux rôles suivants :
 
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Employé:} est autorisé à lire, écrire et supprimer des
   messages.
@@ -268,21 +266,19 @@ Les utilisateurs peuvent également être inactifs, peu importe leur rôle,
 ce qui signifie qu'ils ne peuvent plus avoir accès aux fonctionnalités
 de l'application.
 
-\hypertarget{enumuxe9ration-des-actifs}{%
-\subsection{Enumération des actifs}\label{enumuxe9ration-des-actifs}}
+\subsection{Enumération des actifs}
 
 Cette partie est essentielle pour savoir ce qui devra être protégé.
 
 On peut considérer principalement trois actifs : les messages, les
 données des utilisateurs et l'infrastructure elle-même.
 
-\hypertarget{messages}{%
-\subsubsection{Messages}\label{messages}}
+\subsubsection{Messages}
 
 Les aspects à protéger sont :
 
 \begin{itemize}
-\tightlist
+
 \item
   L'intégrité
 \item
@@ -294,15 +290,14 @@ Les aspects à protéger sont :
 Un incident pourrait résulter en :
 
 \begin{itemize}
-\tightlist
+
 \item
   une perte de confiance en l'entreprise de la part des employés
 \item
   un dysfonctionnement partiel de l'entreprise
 \end{itemize}
 
-\hypertarget{donnuxe9es}{%
-\subsubsection{Données}\label{donnuxe9es}}
+\subsubsection{Données}
 
 Actuellement les seules données stockées sont les login/password, mais
 dans la réalité d'autres informations pourraient être ajoutés.
@@ -310,7 +305,7 @@ dans la réalité d'autres informations pourraient être ajoutés.
 Les aspects à protéger sont :
 
 \begin{itemize}
-\tightlist
+
 \item
   La confidentialité
 \item
@@ -320,7 +315,7 @@ Les aspects à protéger sont :
 Un incident pourrait résulter en :
 
 \begin{itemize}
-\tightlist
+
 \item
   Une perte de confiance en l'entreprise de la part des employés
 \item
@@ -328,13 +323,12 @@ Un incident pourrait résulter en :
   les données)
 \end{itemize}
 
-\hypertarget{infrastructure}{%
-\subsubsection{Infrastructure}\label{infrastructure}}
+\subsubsection{Infrastructure}
 
 L'aspect à protéger est :
 
 \begin{itemize}
-\tightlist
+
 \item
   La disponibilité
 \end{itemize}
@@ -342,31 +336,28 @@ L'aspect à protéger est :
 Un incident pourrait résulter en :
 
 \begin{itemize}
-\tightlist
+
 \item
   Un grand dysfonctionnement de l'entreprise
 \end{itemize}
 
-\hypertarget{data-flow-diagram}{%
-\subsection{Data Flow Diagram}\label{data-flow-diagram}}
+\subsection{Data Flow Diagram}
 
 \includegraphics{images/dfd.png}
 
-\hypertarget{puxe9rimuxe8tre-de-suxe9curisation}{%
-\subsection{Périmètre de
-sécurisation}\label{puxe9rimuxe8tre-de-suxe9curisation}}
+\subsection{Périmètre de sécurisation}
 
 Afin de pouvoir sélectionner les éléments à sécuriser, nous avons établi
 une liste de priorités des différentes menaces. Les menaces se trouvant
 en haut de la liste sont celles que l'ont veut éviter à tout prix, et
-c'est donc ce séléments qui devront être sécurisés en premier:
+c'est donc ces éléments qui devront être sécurisés en premier:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\tightlist
+
 \item
   \textbf{Accès à la zone admin :} Cela permettrait d'ajouter/de
-  modifier ou de supprimer des utilisateurs , c equi est un gros
+  modifier ou de supprimer des utilisateurs , ce qui est un gros
   problème. Le login doit donc être sécurisé au maximum. Il est aussi
   important de rechercher les failles qui permettraient d'y accéder
   autrement que par le login.
@@ -376,7 +367,8 @@ c'est donc ce séléments qui devront être sécurisés en premier:
   failles qui pourraient permettre d'y accéder.
 \item
   \textbf{Message forgés :} S'il est possible de modifier l'expéditeur
-  d'un message, cela pose un gros problème de confiance.
+  d'un message, cela pose un gros problème de confiance et
+  d'authenticité.
 \item
   \textbf{Modification/suppression des messages après envoi :} Egalement
   problématique, car cela peut nuire à la bonne communication dans
@@ -387,17 +379,14 @@ c'est donc ce séléments qui devront être sécurisés en premier:
   correspondant, cette menace peut être évaluée plus tard.
 \end{enumerate}
 
-\hypertarget{sources-de-menaces}{%
-\subsection{Sources de menaces}\label{sources-de-menaces}}
+\subsection{Sources de menaces}
 
 Dans cette partie, les différents types de personnes qui pourraient
 potentiellement tenter de porter atteinte au système sont énumérées.
-Leurs motivation, leur cible et la potentialité qu'il attaque réellement
-le système sont également présentés.
+Leurs motivation, leur cible et la potentialité qu'ils attaquent
+réellement le système sont également présentés.
 
-\hypertarget{employuxe9s-utilisateurs-malins}{%
-\subsubsection{Employés / utilisateurs
-malins}\label{employuxe9s-utilisateurs-malins}}
+\subsubsection{Employés / utilisateurs malins}
 
 \textbf{Motivation :} vengeance, espionnage industriel, curiosité
 
@@ -405,8 +394,7 @@ malins}\label{employuxe9s-utilisateurs-malins}}
 
 \textbf{Potentialité :} haute
 
-\hypertarget{concurrent}{%
-\subsubsection{Concurrent}\label{concurrent}}
+\subsubsection{Concurrent}
 
 \textbf{Motivation :} espionnage industriel
 
@@ -415,8 +403,7 @@ industriels)
 
 \textbf{Potentialité :} Moyenne
 
-\hypertarget{hackers-script-kiddies}{%
-\subsubsection{Hackers, script-kiddies}\label{hackers-script-kiddies}}
+\subsubsection{Hackers, script-kiddies}
 
 \textbf{Motivation :} défi, ego, s'amuser
 
@@ -424,8 +411,7 @@ industriels)
 
 \textbf{Potentialité :} Moyenne
 
-\hypertarget{cybercrime}{%
-\subsubsection{Cybercrime}\label{cybercrime}}
+\subsubsection{Cybercrime}
 
 \textbf{Motivation :} financières
 
@@ -433,8 +419,7 @@ industriels)
 
 \textbf{Potentialité :} Moyenne
 
-\hypertarget{scuxe9narios-dattaques}{%
-\subsection{Scénarios d'attaques}\label{scuxe9narios-dattaques}}
+\subsection{Scénarios d'attaques}
 
 Cette partie du rapport présente tout d'abord la méthode catégorisation
 STRIDE qui sera utilisée, puis les différents scénarios d'attaque qui
@@ -444,17 +429,16 @@ catégoriser comme l'impact que l'attaque aurait, les sources de menace,
 leurs motivations, les éléments attqués et les failles permettant
 l'attaque. Les scénarios sont ensuite décrits en détail avec, pour
 certains, une petite démonstration de l'attaque. Les contre-mesures sont
-ensiute nommées. Elles seront décrites plus en détail dnas le chapitre
+ensuite nommées. Elles seront décrites plus en détail dans le chapitre
 suivant.
 
-\hypertarget{stride}{%
-\subsubsection{STRIDE}\label{stride}}
+\subsubsection{STRIDE}
 
-La méthode de catégorisation STRIDE permet d'identitier le but des
+La méthode de catégorisation STRIDE permet d'identifier le but des
 attaquants pour une menace donnée. STRIDE signifie:
 
 \begin{itemize}
-\tightlist
+
 \item
   Spoofing
 \item
@@ -473,7 +457,7 @@ Cela permet également de savoir comment contrer les menaces, chaque
 catégorie ayant un type de contrôle de sécurité associé:
 
 \begin{itemize}
-\tightlist
+
 \item
   Spoofing -\textgreater{} Authentication
 \item
@@ -491,9 +475,7 @@ catégorie ayant un type de contrôle de sécurité associé:
 De manière générale, cela permet de catégoriser les menaces afin d'avoir
 une meilleure vue d'ensemble.
 
-\hypertarget{scuxe9nario-1-guessing-de-mot-de-passe}{%
-\subsubsection{Scénario 1 : Guessing de mot de
-passe}\label{scuxe9nario-1-guessing-de-mot-de-passe}}
+\subsubsection{Scénario 1 : Guessing de mot de passe}
 
 Etant donné qu'il est nécessaire d'être authentifié pour avoir accès aux
 fonctionnalités de l'application, ce scénario est une première étape
@@ -509,7 +491,7 @@ et 3 présentent d'autres manières de s'authentifier illégalement.
 \textbf{Motivations:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Pour les hackers, cela peut être un défi en soi ou un moyen d'accéder
   à plus de défis.
@@ -547,7 +529,7 @@ par la suite. Dans la réalité, le mot de passe par défaut sera souvent
 quelque chose de simple, pour simplifier la tâche à l'administrateur. Il
 peut s'agir par exemple du login, du nom de famille, ou d'une
 combinaison du prénom et du nom de famille. En ajoutant à ça le fait que
-plusieurs utilisateurs ne changeront pas très rapidement, voire jamais,
+plusieurs utilisateurs ne changeront pas très rapidement, voir jamais,
 tenter différentes combinaisons basées sur le nom des employés peut
 donner beaucoup de résultats. Les employés de l'entreprise sont ceux qui
 peuvent le mieux exploiter cette faiblesse, étant donné qu'ils
@@ -556,7 +538,7 @@ connaissent la logique de choix des mots de passe.
 \textbf{Contre-mesures:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Forcer les utilisateurs à choisir un mot de passe fort (au moins 8
   caractères, lettres et chiffres, maj/min)
@@ -570,12 +552,10 @@ connaissent la logique de choix des mots de passe.
   nouveaux utilisateurs et le leur communiquer de manière sécurisée.
 \end{itemize}
 
-\hypertarget{scuxe9nario-2-bruteforce-de-mot-de-passe}{%
-\subsubsection{Scénario 2 : Bruteforce de mot de
-passe}\label{scuxe9nario-2-bruteforce-de-mot-de-passe}}
+\subsubsection{Scénario 2 : Bruteforce de mot de passe}
 
 Cette attaque permet, comme la précédente, d'accéder aux fonctionnalités
-de l'application, mais elle demande plsu de compétences.
+de l'application, mais elle demande plus de compétences.
 
 \textbf{Catégorie:} S (Spoofing)
 
@@ -598,7 +578,7 @@ fonctionnalités réservées aux administrateurs.
 \textbf{Faille(s) permettant l'attaque:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Une tentative de login prend très peu de temps, il est donc possible
   d'en faire beaucoup très rapidement.
@@ -623,14 +603,12 @@ longs, plus le bruteforce prendra de temps.
 \textbf{Contre-mesures:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Limiter le nombre de tentatives par adresse IP
 \end{itemize}
 
-\hypertarget{scuxe9nario-3-vol-de-mot-de-passe-interception}{%
-\subsubsection{Scénario 3: Vol de mot de passe
-(interception)}\label{scuxe9nario-3-vol-de-mot-de-passe-interception}}
+\subsubsection{Scénario 3: Vol de mot de passe (interception)}
 
 Comme dans les scénarios précédents, cette attaque permet de se
 connecter à l'application.
@@ -640,12 +618,12 @@ connecter à l'application.
 \textbf{Impact:} Haut (permet d'autres attaques)
 
 \textbf{Source de menace:} Employés capables d'utiliser Wireshark ou
-autres personnes ayant accès au reéseau interne de l'entreprise.
+autres personnes ayant accès au réseau interne de l'entreprise.
 
 \textbf{Motivations:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Pour les employés, le but peut être de se faire passer pour quelqu'un
   d'autre, de lire les messages de quelqu'un d'autre ou d'utiliser des
@@ -661,7 +639,7 @@ autres personnes ayant accès au reéseau interne de l'entreprise.
 \textbf{Faille(s) permettant l'attaque:}
 
 \begin{itemize}
-\tightlist
+
 \item
   La page de login utilise http pour envoyer les requêtes qui
   contiennent les login/mot de passe de l'utilisateur.
@@ -678,14 +656,12 @@ but.
 \textbf{Contre-mesures:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Utiliser SSL/TLS pour sécuriser la page de login.
 \end{itemize}
 
-\hypertarget{scuxe9nario-4-vol-de-session}{%
-\subsubsection{Scénario 4 : Vol de
-session}\label{scuxe9nario-4-vol-de-session}}
+\subsubsection{Scénario 4 : Vol de session}
 
 Cette attaque permet d'utiliser la session d'un autre utilisateur mais
 contient plus d'étapes que les scénarios précédents. Elle nécessite
@@ -701,7 +677,7 @@ suffisamment de compétences
 \textbf{Motivations:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Pour les hackers, cela constitue un deuxième défi après s'être
   connecté au site, qui le permet de devenir admin.
@@ -722,7 +698,7 @@ utilisateurs, et potentiellement les informations des utilisateurs.
 \textbf{Faille(s) permettant l'attaque:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Cross-site scripting (XSS) possible dans la fonction d'écriture de
   messages.
@@ -774,7 +750,7 @@ l'administrateur ne se rende pas compte que cette requête a été envoyée,
 mais nous ne rentrerons pas dans ces détails ici.
 
 Le fait que le cookie de l'administrateur puisse être utilisé aussi
-facilement une fois récupérer vient du fait que les cookies de session
+facilement une fois récupéré vient du fait que les cookies de session
 PHP sont ici utilisés avec leur configuration de base. Ils ne sont donc
 jamais modifiés avant la fin de la session et il est possible de fournir
 un identifiant de session sans qu'il ait été initialisé.
@@ -782,7 +758,7 @@ un identifiant de session sans qu'il ait été initialisé.
 \textbf{Contre-mesures:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Contrôler le contenu des champs ``Sujet'' et ``Message'', pour
   empêcher l'injection de code.
@@ -794,9 +770,7 @@ un identifiant de session sans qu'il ait été initialisé.
   utilisateur se connecte).
 \end{itemize}
 
-\hypertarget{scuxe9nario-5-mapping-de-lapplication}{%
-\subsubsection{Scénario 5 : Mapping de
-l'application}\label{scuxe9nario-5-mapping-de-lapplication}}
+\subsubsection{Scénario 5 : Mapping de l'application}
 
 Cette attaque ne permet aucune action directe, mais elle permet d'avoir
 accès à des informations qui devraient être cachées.
@@ -810,7 +784,7 @@ accès à des informations qui devraient être cachées.
 \textbf{Motivations:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Pour tous, c'est un moyen de savoir quels fichiers existent sur le
   site, pour prévoir une autre attaque. Ce scénario est surtout
@@ -821,7 +795,7 @@ accès à des informations qui devraient être cachées.
 \textbf{Element(s) du système attaqué:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Architecture de l'application
 \end{itemize}
@@ -829,7 +803,7 @@ accès à des informations qui devraient être cachées.
 \textbf{Faille(s) permettant l'attaque:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Répertoires accessibles
 \end{itemize}
@@ -841,7 +815,7 @@ fichiers contenus dans les différents répertoires. Cela fonctionne avec
 les URL suivants:
 
 \begin{itemize}
-\tightlist
+
 \item
   localhost/includes
 \item
@@ -865,15 +839,13 @@ l'architecture du site, et voir quels éléments il aimerait attaquer.
 \textbf{Contre-mesures:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Ajouter un fichier index.php à la racine des dossiers qui ne doivent
   pas être accessibles, contenant une redirection vers une autre page.
 \end{itemize}
 
-\hypertarget{scuxe9nario-6-hameuxe7onnage}{%
-\subsubsection{Scénario 6 :
-Hameçonnage}\label{scuxe9nario-6-hameuxe7onnage}}
+\subsubsection{Scénario 6 : Hameçonnage}
 
 Ce scénario nécessite d'être déjà connecté à l'application.
 
@@ -886,7 +858,7 @@ Ce scénario nécessite d'être déjà connecté à l'application.
 \textbf{Motivations:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Leurs motivations sont principalement financières, le but est
   d'obtenir des informations qu'ils pourront revendre ou utiliser pour
@@ -900,7 +872,7 @@ l'attaquant)
 \textbf{Faille(s) permettant l'attaque:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Cross-site scripting (XSS) lors de l'écriture des messages
 \item
@@ -919,18 +891,16 @@ susceptible d'y croire et de donner des informations personnelles.
 \textbf{Contre-mesures:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Contrôler le contenu des champs ``Sujet'' et ``Message'', pour
   empêcher l'injection de code.
 \item
-  Informer les employés pour le permettre de reconnaître ce genre
+  Informer les employés pour leur permettre de reconnaître ce genre
   d'attaques.
 \end{itemize}
 
-\hypertarget{scuxe9nario-7-suppression-de-messages-envoyuxe9s}{%
-\subsubsection{Scénario 7 : Suppression de messages
-envoyés}\label{scuxe9nario-7-suppression-de-messages-envoyuxe9s}}
+\subsubsection{Scénario 7 : Suppression de messages envoyés}
 
 Ce scénario nécessite d'être déjà connecté à l'application.
 
@@ -945,7 +915,7 @@ manière intensive (voir scénario 9)
 \textbf{Motivations:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Faire en sorte que le destinataire ne voie pas le message qu'on lui a
   envoyé (pour des raisons diverses).
@@ -957,7 +927,7 @@ précisément les messages stockés dedans.
 \textbf{Faille(s) permettant l'attaque:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Cross-site scripting (XSS) lors de l'écriture de messages.
 \end{itemize}
@@ -1015,15 +985,13 @@ Les deux messages suspects ont disparu.
 \textbf{Contre-mesures:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Contrôler le contenu des champs ``Sujet'' et ``Message'', pour
   empêcher l'injection de code.
 \end{itemize}
 
-\hypertarget{scuxe9nario-8-ralentissement-de-lapplication}{%
-\subsubsection{Scénario 8 : Ralentissement de
-l'application}\label{scuxe9nario-8-ralentissement-de-lapplication}}
+\subsubsection{Scénario 8 : Ralentissement de l'application}
 
 Ce scénario nécessite d'être déjà connecté à l'application.
 
@@ -1037,11 +1005,11 @@ Hackers, Concurrent
 \textbf{Motivations:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Pour les employés, le but peut être d'embêter un autre employé.
 \item
-  Pour un hacker, il peut d'agir d'un défi.
+  Pour un hacker, il peut s'agir d'un défi.
 \item
   Pour les concurrents, cela peut être un moyen de perturber la
   communication dans l'entreprise.
@@ -1053,7 +1021,7 @@ Hackers, Concurrent
 \textbf{Faille(s) permettant l'attaque:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Cross-site scripting (XSS) sur la page d'écriture de message.
 \end{itemize}
@@ -1074,15 +1042,13 @@ redirection l'empêchant d'utiliser la messagerie:
 \textbf{Contre-mesures:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Contrôler le contenu des champs ``Sujet'' et ``Message'', pour
   empêcher l'injection de code.
 \end{itemize}
 
-\hypertarget{scuxe9nario-9-suppression-des-utilisateurs}{%
-\subsubsection{Scénario 9 : Suppression des
-utilisateurs}\label{scuxe9nario-9-suppression-des-utilisateurs}}
+\subsubsection{Scénario 9 : Suppression des utilisateurs}
 
 Ce scénario est basé sur le scénario 7. Il reprend les mêmes principes
 pour une utilisation plus large.
@@ -1098,7 +1064,7 @@ compétences nécessaires, Concurrents
 \textbf{Motivations:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Pour un hacker, le but peut être de s'amuser.
 \item
@@ -1114,7 +1080,7 @@ n'est pas très utile).
 \textbf{Faille(s) permettant l'attaque:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Cross-site scripting sur la page d'écriture de message.
 \end{itemize}
@@ -1158,15 +1124,14 @@ rétablie, il ne pourra pas être retrouvé.
 \textbf{Contre-mesures:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Contrôler le contenu des champs ``Sujet'' et ``Message'', pour
   empêcher l'injection de code.
 \end{itemize}
 
-\hypertarget{scuxe9nario-10-ruxe9cupuxe9ration-des-mots-de-passe-uxe0-partir-des-hash}{%
 \subsubsection{Scénario 10: Récupération des mots de passe à partir des
-hash}\label{scuxe9nario-10-ruxe9cupuxe9ration-des-mots-de-passe-uxe0-partir-des-hash}}
+hash}
 
 Ce scénario part du principe que l'attaquant a pu obtenir les hash des
 mots de passe sotckés dans la base de données par un moyen qui nous est
@@ -1181,7 +1146,7 @@ inconnu.
 \textbf{Motivations:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Pour les hackers, le but est seulement de s'amuser.
 \item
@@ -1197,7 +1162,7 @@ Administrateurs
 \textbf{Faille(s) permettant l'attaque:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Algorithme de hachage avec paramètres par défaut
 \end{itemize}
@@ -1218,13 +1183,13 @@ ne plus être sûr et le salt utilisé dépend de l'implémentation.
 
 Ces faiblesses étant connues depuis longtemps, il est probable que des
 techniques pour récupérer les mots de passe à partir des hash existent
-déjà (par exemple si la valeur du salt utilisé est connue, des rainbow
-tables ont pu être calculées).
+déjà (par exemple si aucun salt n'est utilisé, des rainbow tables ont pu
+être calculées).
 
 \textbf{Contre-mesures:}
 
 \begin{itemize}
-\tightlist
+
 \item
   Utiliser un algorithme de hachage plus sûr (Blowfish)
 \item
@@ -1232,15 +1197,13 @@ tables ont pu être calculées).
   utilisateur et le stocker avec l'utilisateur dans la base de données
 \end{itemize}
 
-\hypertarget{contre-mesures}{%
-\subsection{Contre-mesures}\label{contre-mesures}}
+\subsection{Contre-mesures}
 
 Cette dernière partie reprend les contre-mesures qui ont été citées pour
 les différents scénarios d'attaque. Elle présente leur implémentation en
 détail.
 
-\hypertarget{mots-de-passe-forts}{%
-\subsubsection{Mots de passe forts}\label{mots-de-passe-forts}}
+\subsubsection{Mots de passe forts}
 
 \textbf{Scénario d'attaque 1}
 
@@ -1266,9 +1229,7 @@ ajoutant une recommendation:
 
 \includegraphics{images/password2.PNG}
 
-\hypertarget{limiter-le-nombre-de-tentatives-de-login}{%
-\subsubsection{Limiter le nombre de tentatives de
-login}\label{limiter-le-nombre-de-tentatives-de-login}}
+\subsubsection{Limiter le nombre de tentatives de login}
 
 \textbf{Scénario d'attaque 2}
 
@@ -1313,7 +1274,7 @@ commencer par créer le script qui supprimera les connexions:
 \includegraphics{images/tentative_remove_connection.PNG}
 
 Il est important que ce fichier ne soit pas dans l'arborescence du site,
-sinon n'importe qui peut l'utiliser pour effecer les connexions. Pour la
+sinon n'importe qui peut l'utiliser pour effacer les connexions. Pour la
 suite des opérations, ce fichier doit être placé sur /home/sti.
 
 Ensuite, il faut automatiser le lancement de ce script. Cela peut être
@@ -1330,12 +1291,11 @@ suivante:
 Cela signifie que tous les jours, à minuit, le script créé précédemment
 sera appelé et les connexions seront remises à zéro.
 
-\hypertarget{utiliser-ssltls}{%
-\subsubsection{Utiliser SSL/TLS}\label{utiliser-ssltls}}
+\subsubsection{Utiliser SSL/TLS}
 
 \textbf{Scénario d'attaque 3}
 
-Afin de s'assurer que totues les connections au site web sont sécurisé
+Afin de s'assurer que toutes les connections au site web sont sécurisé
 en SSL/TLS il suffit de rediriger les requêtes en HTTP vers la même page
 en HTTPS. Pour ce faire, il suffit de rajouter les lignes suivantes dans
 le fichier \texttt{/etc/httpd/conf/httpd.conf} dans la balise
@@ -1352,7 +1312,8 @@ et apache est configuré pour l'utiliser. Pour un maximum de sécurité, un
 certificat signé par une authorité reconnue peut être mis à la place de
 ceux déjà en place dans le dossier \texttt{/etc/pki/tls/}. La clef
 privée se trouve sour \texttt{private/localhost.key} et le certificat
-sous \texttt{certs/localhost.crt}.
+sous \texttt{certs/localhost.crt}. Mais pour cela, un nom de domaine est
+nécessaire.
 
 Une foir les modifications effectués, le serveur doit être redémarré.
 Ensuite, lorsqu'on accède à l'application, la page suivante s'affiche:
@@ -1372,9 +1333,7 @@ on est redirigé vers la version sécurisé sur laquelle le navigateur
 refait la même requête et la page sécurisé est affiché comme le montre
 le cadenas dans la barre d'URL.
 
-\hypertarget{contruxf4les-pour-empuxeacher-xss}{%
-\subsubsection{Contrôles pour empêcher
-XSS}\label{contruxf4les-pour-empuxeacher-xss}}
+\subsubsection{Contrôles pour empêcher XSS}
 
 \textbf{Scénarios d'attaque 4, 6, 7, 8 et 10}
 
@@ -1392,9 +1351,7 @@ Grâce à cette fonction, les balises et charactères spéciaux sont
 
 \includegraphics{images/xss_impl1.png}
 
-\hypertarget{renforcer-les-identifiants-de-session}{%
-\subsubsection{Renforcer les identifiants de
-session}\label{renforcer-les-identifiants-de-session}}
+\subsubsection{Renforcer les identifiants de session}
 
 \textbf{scénario d'attaque 4}
 
@@ -1402,11 +1359,11 @@ Un premier élément serait d'activer le \emph{strict mode}, empêchant les
 utilisateurs de modifier leur identifiant de session. Malheureusement
 cette otpion n'est disponible qu'à partir de PHP 5.5.2.
 
-L'autre élément à mettre en place est de faire en sort que l'identifiant
-de session soit régénéré lorsque l'utilisateur se connecte ou se
-déconnecte. Ainsi, un identifiant de session récupéré par un attaquant
-ne sera pas valable longtemps. Il ne s'agit que d'une seule ligne à
-ajouter dans le fichier vies/login.php:
+L'autre élément à mettre en place est de faire en sorte que
+l'identifiant de session soit régénéré lorsque l'utilisateur se connecte
+ou se déconnecte. Ainsi, un identifiant de session récupéré par un
+attaquant ne sera pas valable longtemps. Il ne s'agit que d'une seule
+ligne à ajouter dans le fichier views/login.php:
 
 \includegraphics{images/session_code.PNG}
 
@@ -1422,9 +1379,7 @@ est modifié quand l'utilisateur se connecte:
 
 Le comportement est le même lorsque l'utilisateur se déconnecte.
 
-\hypertarget{empuxeacher-laccuxe8s-aux-ruxe9pertoires}{%
-\subsubsection{Empêcher l'accès aux
-répertoires}\label{empuxeacher-laccuxe8s-aux-ruxe9pertoires}}
+\subsubsection{Empêcher l'accès aux répertoires}
 
 \textbf{Scénario d'attaque 5}
 
@@ -1436,9 +1391,7 @@ une autre page:
 
 https://openclassrooms.com/courses/protegez-vous-efficacement-contre-les-failles-web/protegez-vos-repertoires
 
-\hypertarget{renforcer-lalgorithme-de-hachage-des-mots-de-passe}{%
-\subsubsection{Renforcer l'algorithme de hachage des mots de
-passe}\label{renforcer-lalgorithme-de-hachage-des-mots-de-passe}}
+\subsubsection{Renforcer l'algorithme de hachage des mots de passe}
 
 \textbf{Scénario d'attaque 10}
 
@@ -1447,15 +1400,15 @@ l'implémentation. On reconnait MD5 au préfixe \(1\):
 
 \includegraphics{images/crypt_avant.PNG}
 
-L'algorithme de hachage recommandé est Blowfish, avec un hash différent
+L'algorithme de hachage recommandé est Blowfish, avec un salt différent
 pour chaque mot de passe. La partie du code contenant l'appel à la
-fonction crypt(9 lors de la création d'un nouvel utilisateur doit donc
-être modifiée:
+fonction \texttt{crypt()} lors de la création d'un nouvel utilisateur
+doit donc être modifiée:
 
 \includegraphics{images/crypt_avant2.PNG}
 
 Comme on le voit, actuellement il n'y a qu'un seul paramètre. pour
-utiliser blowfish, il faut une deuxième paramètre (salt) avec le format
+utiliser blowfish, il faut un deuxième paramètre (salt) avec le format
 suivant: \(2a\)un nombre entre 04 et 31\$sel de 22 caractères. Cela peut
 être fait au moyen du code suivant:
 
@@ -1463,9 +1416,9 @@ suivant: \(2a\)un nombre entre 04 et 31\$sel de 22 caractères. Cela peut
 http://www.the-art-of-web.com/php/blowfish-crypt/
 
 Il n'est pas nécessaire de modifier la vérification de mot de passe. La
-fonction crypt() parse le hash pour retrouver l'algorithme utilisé et le
-salt. On voit que quand on crée un nouvel utilisateur, son hash est
-différent:
+fonction \texttt{crypt()} parse le hash pour retrouver l'algorithme
+utilisé et le salt. On voit que quand on crée un nouvel utilisateur, son
+hash est différent:
 
 \includegraphics{images/crypt_apres2.PNG}
 
@@ -1484,8 +1437,7 @@ Le script de création de base de données doit également être mis à jour:
 
 \includegraphics{images/crypt_apres5.PNG}
 
-\hypertarget{conclusion}{%
-\subsection{Conclusion}\label{conclusion}}
+\subsection{Conclusion}
 
 Au terme de ce projet, nous avons été en mesure de sécuriser une grande
 partie de l'application en appliquant des contre-mesures en fonction des
@@ -1498,5 +1450,6 @@ la première partie du projet ne devait pas être particulièrement
 sécurisée, mais elle prévenait déjà de certaines attaques. Cela permet
 donc aussi de mettre en évidences les réflexes que nous n'avons pas
 encore, et de nous habituer à écrire du code sécurisé dès le départ.
+
 
 \end{document}
