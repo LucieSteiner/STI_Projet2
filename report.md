@@ -546,6 +546,45 @@ Comme on peut le voir, lorsqu'un mot de passe ne correspond pas à tous les crit
 
 ### Limiter le nombre de tentatives de login ###
 
+https://openclassrooms.com/courses/protegez-vous-efficacement-contre-les-failles-web/l-attaque-par-force-brute
+Pour pouvoir vérifier le nombre de tentatives par adresse IP par jour, il faut pouvoir stocker ces informations et donc ajouter une table "connexion" dans la base de données: 
+
+![](images/tentative_db.PNG)
+
+Ensuite, il faut une fonction permettant d'ajouter des connexions et de vérifier le nombre de connexions ayant eu lieu depuis une certaine adresse IP ce jour-là: 
+
+![](images/tentative_model.PNG)
+
+Cette fonction compte le nombre d'occurences de l'adresse IP puis ajoute une connexion si le nombre d'occurences est inférieur à 10. Si le nombre d'occurences est supérieure à 10, cette adresse IP a dépassé le nombre maximum de tentatives en 24h. 
+
+La page de login doit ensuite afficher "Wrong credentials" si l'adresse IP a encore droit à des tentatives et un message informant l'utilisateur que le nombre de tentatives maximum est atteint sinon:
+
+![](images/tentative_login.PNG)
+
+On peut vérifier que tout cela fonctionne en entrant un mauvais login/mot de passe plusieurs fois. En dessous de 10 tentatives, on obtient le résultat suivant:
+
+![](images/tentative_moins_10.PNG)
+
+Et en dessus de 10 tentatives, le résultat suivant: 
+
+![](images/tentative_plus_10.PNG)
+
+Il faut maintenant mettre quelque chose en place pour que les connexions soient supprimées chaque jour de la base de données. Pour cela, on va commencer par créer le script qui supprimera les connexions: 
+
+![](images/tentative_remove_connection.PNG)
+
+Il est important que ce fichier ne soit pas dans l'arborescence du site, sinon n'importe qui peut l'utiliser pour effecer les connexions. Pour la suite des opérations, ce fichier doit être placé sur /home/sti. 
+
+Ensuite, il faut automatiser le lancement de ce script. Cela peut être fait en utilisant *cron*, qui permet de lancer une commande, par exemple, tous les jours:
+
+![](images/tentative_crontab.PNG)
+
+Cette commande ouvre l'éditeur Vi, qu'on utilise pour ajouter la ligne suivante: 
+
+![](images/tentative_crontab_detail.PNG)
+
+Cela signifie que tous les jours, à minuit, le script créé précédemment sera appelé et les connexions seront remises à zéro. 
+
 ### Utiliser SSL/TLS ###
 
 Afin de s'assurer que totues les connections au site web sont sécurisé en SSL/TLS il suffit de rediriger les requêtes en HTTP vers la même page en HTTPS. Pour ce faire, il suffit de rajouter les lignes suivantes dans le fichier `/etc/httpd/conf/httpd.conf` dans la balise `<Directory "/var/www/html">`
