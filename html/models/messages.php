@@ -22,7 +22,7 @@ function get_messages($user){
     $data = $result->fetchAll();
 
     close();
-    return sanitizer($data);
+    return $data;
 }
 
 function get_message_detail($id){
@@ -34,7 +34,7 @@ function get_message_detail($id){
     $data = $result->fetch();
 
     close();
-    return sanitizer($data);
+    return $data;
 }
 
 function write_message($from, $to, $title, $message){
