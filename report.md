@@ -638,6 +638,12 @@ On peut voir que si on fait une requête sur `http://localhost/` on est redirig�
 
 **Scénarios d'attaque 4, 6, 7, 8 et 10**
 
+Nous avons décidé de valider les messages avant de les enregistrer dans la base de donnée afin de pouvoir les afficher sans effort supplémentaire. Ceci a été fait à l'aide de la fonction `htmlspecialchars` au début de la fonction d'écriture dans la base de donnée.
+
+![](images/xss_impl1.png)
+
+Les balises et charactères spéciaux sont échappés et affiché correctement.
+
 ### Renforcer les identifiants de session ###
 
 **scénario d'attaque 4**
