@@ -1,8 +1,12 @@
 # STI Rapport étude de menaces #
 
 ## Introduction ##
-
+Ce rapport présente la d
+euxième partie du projet de Sécurité des Technologies Internet. Elle consiste en l'analyse et la sécurisaté de l'application web réalisée lors de la première partie du projet. Dans une premier temps, une analyse des menaces a été effectuée, afin de mettre en évidences les différentes menaces et les éléments à sécuriser. Ensuite, les différentes contre-mesures présentées ont été implémentées afin de sécuriser l'application. Le but final est que l'application garde les même fonctionnalités, mais présente moins de failles.
+ 
 ## Description du système ##
+
+Dans cette première partie, l'ojectif est de rassembler toutes les informations sur le système qui pourraient être utile pour identifier les menaces. Elle consiste principalement à savoir quels sont le sobjectifs du système, quels sont ses exigences en matière de sécurité et de quoi il est constitué.
 
 ### Objectifs ###
 Le système a pour objectif de permettre aux employés de communiqués entre eux en s’envoyant des messages. Cela contribue au bon fonctionnement de l’entreprise en permettant aux informations de circuler correctement. La qualité du système contribue à la réputation de l’entreprise du point de vue des employés. Plus le système est adéquat et solide, plus les employés comprennent que la société prend en compte leurs besoins.
@@ -29,6 +33,9 @@ Les utilisateurs du système peuvent les deux rôles suivants :
 Les utilisateurs peuvent également être inactifs, peu importe leur rôle, ce qui signifie qu’ils ne peuvent plus avoir accès aux fonctionnalités de l’application.
 
 ## Enumération des actifs ##
+
+Cette partie est essentielle pour savoir ce qui devra être protégé.
+
 On peut considérer principalement trois actifs : les messages, les données des utilisateurs et l’infrastructure elle-même.
 
 ### Messages ###
@@ -82,7 +89,9 @@ Afin de pouvoir sélectionner les éléments à sécuriser, nous avons établi u
 4.	**Modification/suppression des messages après envoi :** Egalement problématique, car cela peut nuire à la bonne communication dans l'entreprise.
 5.	**Récupération des mots de passe:** Comme cela nécessiterait d'abord de voler les hash, puis de retrouver les mots de passe correspondant, cette menace peut être évaluée plus tard.
  
-# Sources de menaces #
+## Sources de menaces ##
+
+Dans cette partie, les différents types de personnes qui pourraient potentiellement tenter de porter atteinte au système sont énumérées. Leurs motivation, leur cible et la potentialité qu'il attaque réellement le système sont également présentés.
 
 ### Employés / utilisateurs malins ###
 
@@ -547,7 +556,11 @@ Ces faiblesses étant connues depuis longtemps, il est probable que des techniqu
 
 ## Contre-mesures ##
 
+Cette dernière partie reprend les contre-mesures qui ont été citées pour les différents scénarios d'attaque. Elle présente leur implémentation en détail. 
+
 ### Mots de passe forts ###
+
+**Scénario d'attaque 1**
 
 La force des mots de passe doit être testée sur la page de création d'utilisateur, ainsi que sur la page de changement de mot de passe.
 Pour que le mot de passe soit considéré comme fort, il doit avoir au moins 8 caractères, dont au moins une lettre minuscule, une lettre majuscule et un chiffre. La manière la plus rapide vérifier tous ces critères est d'utiliser un regex (source: https://openclassrooms.com/courses/protegez-vous-efficacement-contre-les-failles-web/controlez-les-mots-de-passe). Le code suivant a donc été ajouté dans views/create_user.php:
@@ -563,6 +576,8 @@ Comme on peut le voir, lorsqu'un mot de passe ne correspond pas à tous les crit
 ![](images/password2.PNG)
 
 ### Limiter le nombre de tentatives de login ###
+
+**Scénario d'attaque 2**
 
 https://openclassrooms.com/courses/protegez-vous-efficacement-contre-les-failles-web/l-attaque-par-force-brute
 Pour pouvoir vérifier le nombre de tentatives par adresse IP par jour, il faut pouvoir stocker ces informations et donc ajouter une table "connexion" dans la base de données: 
@@ -605,6 +620,8 @@ Cela signifie que tous les jours, à minuit, le script créé précédemment ser
 
 ### Utiliser SSL/TLS ###
 
+**Scénario d'attaque 3**
+
 Afin de s'assurer que totues les connections au site web sont sécurisé en SSL/TLS il suffit de rediriger les requêtes en HTTP vers la même page en HTTPS. Pour ce faire, il suffit de rajouter les lignes suivantes dans le fichier `/etc/httpd/conf/httpd.conf` dans la balise `<Directory "/var/www/html">`
 
 		RewriteEngine On
@@ -619,7 +636,11 @@ On peut voir que si on fait une requête sur `http://localhost/` on est redirig�
 
 ### Contrôles pour empêcher XSS ###
 
+**Scénarios d'attaque 4, 6, 7, 8 et 10**
+
 ### Renforcer les identifiants de session ###
+
+**scénario d'attaque 4**
 
 Un premier élément serait d'activer le *strict mode*, empêchant les utilisateurs de modifier leur identifiant de session. Malheureusement cette otpion n'est disponible qu'à partir de PHP 5.5.2.
 
@@ -682,3 +703,7 @@ Le script de création de base de données doit également être mis à jour:
 ![](images/crypt_apres5.PNG)
 
 ## Conclusion ##
+
+Au terme de ce projet, nous avons été en mesure de sécuriser une grande partie de l'application en appliquant des contre-mesures en fonction des menaces relevées plus tôt. La structure de l'analyse de menaces a été d'une grande aide pour organiser le travail. 
+
+Ce travail nous a également permis de voir quels réflexes nous avons en matière de sécurité. En effet, l'application réalisée dans le cadre de la première partie du projet ne devait pas être particulièrement sécurisée, mais elle prévenait déjà de certaines attaques. Cela permet donc aussi de mettre en évidences les réflexes que nous n'avons pas encore, et de nous habituer à écrire du code sécurisé dès le départ.
