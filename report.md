@@ -72,8 +72,6 @@ Un incident pourrait résulter en :
 
 ![](images/dfd.png)
 
-
-
 ## Périmètre de sécurisation ##
 
 Afin de pouvoir sélectionner les éléments à sécuriser, nous avons établi une liste de priorités des différentes menaces. Les menaces se trouvant en haut de la liste sont celles que l'ont veut éviter à tout prix, et c'est donc ce séléments qui devront être sécurisés en premier:
@@ -83,7 +81,6 @@ Afin de pouvoir sélectionner les éléments à sécuriser, nous avons établi u
 3. **Message forgés :** S'il est possible de modifier l'expéditeur d'un message, cela pose un gros problème de confiance. 
 4.	**Modification/suppression des messages après envoi :** Egalement problématique, car cela peut nuire à la bonne communication dans l'entreprise.
 5.	**Récupération des mots de passe:** Comme cela nécessiterait d'abord de voler les hash, puis de retrouver les mots de passe correspondant, cette menace peut être évaluée plus tard.
-
  
 # Sources de menaces #
 
@@ -121,13 +118,29 @@ Afin de pouvoir sélectionner les éléments à sécuriser, nous avons établi u
 
 ## Scénarios d'attaques ##
 
-Petite intro
-
-Remarque: les contre-mesures pour les différents scénarios sont nommées ici et seront décrites plsu en détail dans le chapitre suivant.
+Cette partie du rapport présente tout d'abord la méthode catégorisation STRIDE qui sera utilisée, puis les différents scénarios d'attaque qui ont été imaginés. Chacun de ces scénarios contient des informations permettant de lui attribuer une priorité, ou simplement de le catégoriser comme l'impact que l'attaque aurait, les sources de menace, leurs motivations, les éléments attqués et les failles permettant l'attaque. Les scénarios sont ensuite décrits en détail avec, pour certains, une petite démonstration de l'attaque. Les contre-mesures sont ensiute nommées. Elles seront décrites plus en détail dnas le chapitre suivant.
 
 ### STRIDE ###
 
-Expliquer STRIDE et comment on va l'utiliser pour catégoriser les attaques.
+La méthode de catégorisation STRIDE permet d'identitier le but des attaquants pour une menace donnée. STRIDE signifie: 
+
+* Spoofing
+* Tampering
+* Repudiation
+* Information Disclosure
+* Denial of Service
+* Elevation of Privilege
+
+Cela permet également de savoir comment contrer les menaces, chaque catégorie ayant un type de contrôle de sécurité associé:
+
+* Spoofing -> Authentication
+* Tampering -> Integrity
+* Repudiation -> Non-Repudiation
+* Information Disclosure -> Confidentiality
+* Denial of Service -> Availabiliy
+* Elevation of Privilege -> Authorization
+
+De manière générale, cela permet de catégoriser les menaces afin d'avoir une meilleure vue d'ensemble.
 
 ### Scénario 1 : Guessing de mot de passe ###
 
@@ -336,7 +349,7 @@ L'attaquant peut ensuite utiliser ces éléments pour se représenter l'architec
 
 Ce scénario nécessite d'être déjà connecté à l'application.
 
-**Catégorie:** ? (revenir dessus après) S/I/
+**Catégorie:** S (Spoofing), I (Information Disclosure)
 
 **Impact:** moyen (dépend du niveau d'information des employés)
 
@@ -459,7 +472,7 @@ Lorsque le destinataire se connectera, il sera coincé dans une boucle de redire
 
 Ce scénario est basé sur le scénario 7. Il reprend les mêmes principes pour une utilisation plus large.
 
-**Catégorie:** T/E/D
+**Catégorie:** T (Tampering)/E (Elevation of Privilege)/D (Denial of Service)
 
 **Impact:** haut (surtout s'il n'y a pas de backup)
 
