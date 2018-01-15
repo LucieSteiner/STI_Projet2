@@ -548,6 +548,14 @@ Comme on peut le voir, lorsqu'un mot de passe ne correspond pas à tous les crit
 
 ### Utiliser SSL/TLS ###
 
+Afin de s'assurer que totues les connections au site web sont sécurisé en SSL/TLS il suffit de rediriger les requêtes en HTTP vers la même page en HTTPS. Pour ce faire, il suffit de rajouter les lignes suivantes dans le fichier `/etc/httpd/conf/httpd.conf` dans la balise `<Directory "/var/www/html">`
+
+		RewriteEngine On
+		RewriteCond %{HTTPS} off
+		RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+Ceci est possible car le serveur contient déjà un certificat autosigné et apache est configuré pour l'utiliser. Pour un maximum de sécurité, un certificat signé par une authorité reconnue peut être mis à la place de ceux déjà en place dans le dossier `/etc/pki/tls/`. La clef privée se trouve sour `private/localhost.key` et le certificat sous `certs/localhost.crt`. 
+
 ### Contrôles pour empêcher XSS ###
 
 ### Renforcer les identifiants de session ###
